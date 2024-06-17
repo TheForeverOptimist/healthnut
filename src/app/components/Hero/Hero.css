@@ -7,10 +7,13 @@
   height: 87vh;
   border-radius: 10px;
   padding: 1em;
+  overflow: hidden;
 }
 
 .heroContent {
   max-width: 50%;
+  position: relative;
+  z-index: 1;
 }
 
 .heroContent h1 {
@@ -36,12 +39,47 @@
   cursor: pointer;
 }
 
-.heroImage{
-    max-width: 50%;
+.heroImage {
+  max-width: 50%;
+  z-index: 1;
 }
 
-.heroImage img{
-    width: 100%;
+.heroImage img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.stethoImage{
+    position: absolute;
+    top: -90px;
+    left: 0;
     height: auto;
-    border-radius: 10px;
+    width: 60vw;
+    opacity: 0.9;
+    z-index: 0;
+    
+}
+
+@media (max-width: 768px) {
+  .heroImage img, .stethoImage {
+    display: none;
+  }
+
+  .heroContent {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .heroContent h1 {
+    font-size: 2rem;
+  }
+
+  .heroContent p {
+    font-size: 0.9rem;
+  }
+
+  .start {
+    font-size: 0.9rem;
+  }
 }

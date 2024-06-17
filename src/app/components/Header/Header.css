@@ -33,12 +33,13 @@
 }
 
 .begin {
+  padding: 10px 20px;
   background: rgb(159, 207, 110);
   font-size: 1.3rem;
-  color: var(--primary-foreground);
+  color: #fff;
+  border: none;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
+  border-radius: 10px;
 }
 
 @media (max-width: 768px) {
