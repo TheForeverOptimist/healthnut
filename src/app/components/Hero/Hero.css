@@ -36,7 +36,9 @@
   background-color: rgb(159, 207, 110);
   border: none;
   border-radius: 5px;
-  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0, 0.3);
+  cursor: pointer !important;
+  z-index: 5;
 }
 
 .heroImage {
@@ -57,7 +59,8 @@
     height: auto;
     width: 60vw;
     opacity: 0.9;
-    z-index: 0;
+    z-index: 1;
+    pointer-events: none;
     
 }
 
