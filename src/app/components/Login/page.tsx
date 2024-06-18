@@ -8,7 +8,7 @@ export default function Login(){
     return(
         <div>
             <h1>Login</h1>
-            <button onClick={handleLogin}>Verify with Medplum</button>
+            <button onClick={handleLogin}>Please Verify Identity with Medplum</button>
         </div>
     )
 }
