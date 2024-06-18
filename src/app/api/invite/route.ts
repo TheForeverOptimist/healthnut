@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { medplum } from "@/libs/medplumClient";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse){
+export async function POST(req: NextApiRequest, res: NextApiResponse){
 
 
     if(req.method === 'POST'){
