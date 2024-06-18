@@ -1,63 +1,53 @@
-import type {NextAuthOptions} from 'next-auth'
+import type { NextAuthOptions } from "next-auth";
 
 export const options: NextAuthOptions = {
-    debug: true,
-    providers: [
-        {
-            id: 'medplum',
-            name: 'Medplum',
-            type: 'oauth',
-            version: '2.0',
-            checks: ['state', 'nonce'],
-            wellKnown: 'https://api.medplum.com/.well-known/openid-configuration',
-            accessTokenUrl: 'https://api.medplum.com/oauth2/token',
-            authorization: {
-                url: 'https://api.medplum.com/oauth2/authorize',
-                params: {
-                    scope: 'openid profile email',
-                    redirect_uri: 'http://localhost:3000/api/auth/callback',
-                    response_type: 'code',
-                    nonce: '',
-                },
-            },
-            token: {
-                url: 'https://api.medplum.com/oauth2/token',
-                params: {
-                    grant_type: 'authorization_code',
-                    client_id: process.env.MEDPLUM_CLIENT_ID,
-                    client_secret: process.env.MEDPLUM_CLIENT_SECRET,
-                },
-            },
-            clientId: process.env.MEDPLUM_CLIENT_ID,
-            clientSecret: process.env.MEDPLUM_CLIENT_SECRET,
-            profile: (profile) => {
-                return {
-                    id: profile.login_id,
-                    name: profile.fhirUser,
-                };
-            },
-
+  debug: true,
+  providers: [
+    {
+      id: "medplum",
+      name: "Medplum",
+      type: "oauth",
+      version: "2.0",
+      checks: ["state", "nonce"],
+      wellKnown: "https://api.medplum.com/.well-known/openid-configuration",
+      accessTokenUrl: "https://api.medplum.com/oauth2/token",
+      authorization: {
+        url: "https://api.medplum.com/oauth2/authorize",
+        params: {
+          scope: "openid profile email",
+          redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback`,
+          response_type: "code",
+          nonce: "",
         },
-    ],
-    callbacks: {
-        async jwt({token, account}){
-            if(account){
-                return {
-                    ...token,
-                    accessToken: account.access_token,
-                }
-            }
-            return token;
-        },
-        async session({session, token}){
-            if(token){
-                return {
-                    ...session,
-                    accessToken: token.accessToken,
-                }
-            }
-            return session
-        }
-    }
-}
-
+      },
+      clientId: process.env.MEDPLUM_CLIENT_ID,
+      clientSecret: process.env.MEDPLUM_CLIENT_SECRET,
+      profile: (profile) => {
+        return {
+          id: profile.login_id,
+          name: profile.fhirUser,
+        };
+      },
+    },
+  ],
+  callbacks: {
+    async jwt({ token, account }) {
+      if (account) {
+        return {
+          ...token,
+          accessToken: account.access_token,
+        };
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token) {
+        return {
+          ...session,
+          accessToken: token.accessToken,
+        };
+      }
+      return session;
+    },
+  },
+};
