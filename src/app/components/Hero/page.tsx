@@ -6,7 +6,11 @@ import doctor from "../../images/doctor_hero.png";
 import stetho from "../../images/stetho.png"
 import Image from "next/image";
 
-export default function Hero() {
+interface HeroProps {
+    setPage: (page: string) => void;
+}
+
+export default function Hero({setPage}: HeroProps): JSX.Element {
   return (
     <section className="heroSection">
       <div className="heroContent">

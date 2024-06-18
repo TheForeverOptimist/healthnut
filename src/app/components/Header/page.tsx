@@ -6,7 +6,14 @@ import "./Header.css";
 
 import React from "react";
 
-export default function Header() {
+interface HeaderProps {
+  setPage: (page: string) => void;
+  user?: {
+    name?: string | null | undefined;
+  };
+}
+
+export default function Header({user, setPage}: HeaderProps): JSX.Element{
   return (
     <nav className="navbar">
       <div className="navbar-left">

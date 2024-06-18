@@ -2,12 +2,15 @@
 
 import React from "react";
 import {useState} from "react"
-import Header from "./components/Header/Header"
-import Hero from "./components/Hero/Hero";
+import Header from "./components/Header/page"
+import Hero from "./components/Hero/page";
+import { useSession } from "next-auth/react";
+import Dashboard from "./components/Dashboard/page";
+import Login from "./components/Login/page";
 
-export default function Home() {
+export default function Home(): JSX.Element {
   const [page, setPage] = useState<string>('home');
-  const [user, setUser] = useState(null)
+  const {data: session, status} = useSession()
 
   // const handleLogin = (userData) => {
   //   setUser(userData)
@@ -16,8 +19,17 @@ export default function Home() {
 
   return (
     <main className="container">
-      <Header />
-      <Hero />
+      <Header setPage={setPage} user={session?.user} />
+      {status === "loading" ? (
+        <p>Loading...</p>
+      ) : session ? (
+        <Dashboard user={session.user} />
+      ) : (
+        <>
+        {page === "home" && <Hero setPage={setPage} />}
+        {page === 'begin' && <Login />}
+        </>
+      )}
     </main>
-  )
+  );
 }
