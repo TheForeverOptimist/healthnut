@@ -9,8 +9,8 @@ export default function Login(){
     }
     return(
         <div>
-            <h1>Login</h1>
-            <button onClick={handleLogin}>Please Verify Identity with Medplum</button>
+            <h1>Great! Your registration is complete! For your security, please click the button below</h1>
+            <button onClick={handleLogin}>Verify Identity with Medplum</button>
         </div>
     )
 }

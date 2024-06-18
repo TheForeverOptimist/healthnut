@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
 
+interface InviteProps {
+  setPage: (page: string) => void;
+}
 
-
-const Invite = () => {
+const Invite = ({setPage}: InviteProps): JSX.Element => {
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [email, setEmail] = useState<string>('')
@@ -18,7 +20,9 @@ const Invite = () => {
             body: JSON.stringify({firstName, lastName, email}),
         });
         if(response.ok){
-            alert('Invitation Complete')
+            alert('Invitation Complete!')
+            setPage('verify')
+
         }else{
             alert('Invitation Failed')
         }
