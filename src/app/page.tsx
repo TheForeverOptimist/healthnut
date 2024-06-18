@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
 import React from "react";
-import {useState} from "react"
-import Header from "./components/Header/page"
+import { useState } from "react";
+import Header from "./components/Header/header";
 import Hero from "./components/Hero/page";
 import { useSession } from "next-auth/react";
-import Dashboard from "./components/Dashboard/page";
-import Login from "./components/Login/page";
+import Dashboard from "./components/Dashboard/dashboard";
+import Login from "./components/Login/login";
 
 export default function Home(): JSX.Element {
-  const [page, setPage] = useState<string>('home');
-  const {data: session, status} = useSession()
+  const [page, setPage] = useState<string>("home");
+  const { data: session, status } = useSession();
 
   // const handleLogin = (userData) => {
   //   setUser(userData)
@@ -26,8 +26,8 @@ export default function Home(): JSX.Element {
         <Dashboard user={session.user} />
       ) : (
         <>
-        {page === "home" && <Hero setPage={setPage} />}
-        {page === 'begin' && <Login />}
+          {page === "home" && <Hero setPage={setPage} />}
+          {page === "begin" && <Login />}
         </>
       )}
     </main>

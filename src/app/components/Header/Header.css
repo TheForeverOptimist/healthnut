@@ -38,9 +38,9 @@
   font-size: 1.3rem;
   color: #fff;
   border: none;
-  text-decoration: none;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0,0,0, 0.3);
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
