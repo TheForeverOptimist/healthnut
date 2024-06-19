@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
-import { medplum } from "@/libs/medplumClient";
+import { MedplumClient } from "@medplum/core";
+
+export const medplum = new MedplumClient({
+  baseUrl: "https://api.medplum.com/",
+  clientId: process.env.MEDPLUM_CLIENT_ID,
+  clientSecret: process.env.MEDPLUM_CLIENT_SECRET,
+});
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
