@@ -34,7 +34,11 @@ export async function GET(req: Request) {
     });
 
     const tokenData = await tokenResponse.json();
-    const accessToken = await tokenData.access_token;
+    const accessToken = tokenData.access_token;
+
+    if(!accessToken){
+      throw new Error("Access token is missing")
+    }
 
     // Extract user data from state
     const { firstName, lastName, email } = JSON.parse(
@@ -54,7 +58,7 @@ export async function GET(req: Request) {
       },
     });
 
-    return NextResponse.json({ message: "Invitation sent!", response });
+    return NextResponse.json({ message: "Patient created!", response });
   } catch (error) {
     console.error("Error inviting user:", error);
     return NextResponse.json(

@@ -8,6 +8,7 @@ const Invite = ({ setPage }: InviteProps): JSX.Element => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,6 +50,14 @@ const Invite = ({ setPage }: InviteProps): JSX.Element => {
         placeholder="Email Address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <br />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         required
       />
       <button type="submit">Request Verification</button>
