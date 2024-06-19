@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import Dashboard from "./components/Dashboard/dashboard";
 import Invite from "./components/Invite/invite";
 import Login from "./components/Login/login";
+import FindPatient from "./components/FindPatient/findpatient";
 
 export default function Home(): JSX.Element {
   const [page, setPage] = useState<string>("home");
@@ -24,12 +25,13 @@ export default function Home(): JSX.Element {
       {status === "loading" ? (
         <p>Loading...</p>
       ) : session ? (
-        <Dashboard user={session.user} />
+        <Dashboard user={setUser} />
       ) : (
         <>
+          
           {page === "home" && <Hero setPage={setPage} />}
-          {page === "begin" && <Invite setPage={setPage} />}
-          {page === 'verify' && <Login />}
+          {page === "begin" && <FindPatient setPage={setPage} />}
+          {page === "dashboard" && <Dashboard />}
         </>
       )}
     </main>

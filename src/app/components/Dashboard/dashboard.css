@@ -1,0 +1,16 @@
+.dashboard {
+  display: flex;
+}
+.left-panel {
+  flex: 1;
+  padding: 20px;
+}
+.right-panel {
+  flex: 1;
+  padding: 20px;
+}
+.patient-profile,
+.diagnostic-reports,
+.notes-section {
+  margin-bottom: 20px;
+}
