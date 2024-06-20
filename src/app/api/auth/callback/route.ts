@@ -21,14 +21,14 @@ export async function GET(req: NextRequest) {
   const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString(
     "base64"
   );
-  const authorizationHeader = `Basic ${basicAuth}`;
+  const authorizationHeader = `Basic${basicAuth}`;
 
   try {
     // Exchange authorization code for access token
     const tokenResponse = await fetch(tokenUrl, {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
         Authorization: authorizationHeader,
       },
       body: new URLSearchParams({
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
       console.error("Error during token exchange:", responseText);
       return NextResponse.json(
         { message: "Error during token exchange.", error: responseText },
-        { status: 400 }
+        { status: tokenResponse.status }
       );
     }
 
