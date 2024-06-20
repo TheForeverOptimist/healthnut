@@ -5,7 +5,6 @@ import { medplum } from "@/libs/medplumClient";
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
-  const state = searchParams.get("state");
 
   const redirectUri = "http://localhost:3000/api/auth/callback";
   const clientId = process.env.MEDPLUM_CLIENT_ID;

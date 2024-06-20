@@ -18,21 +18,21 @@ export async function POST(req: NextRequest) {
 
     console.log(response);
 
-    const loginParams = {
-      authorizeUrl: "https://api.medplum.com/oauth2/authorize",
-      clientId: process.env.MEDPLUM_CLIENT_ID!,
-      redirectUri: "http://localhost:3000/api/auth/callback",
-      responseType: "code",
-      scope: "openid profile email",
-      state: encodeURIComponent(
-        JSON.stringify({ firstName, lastName, email, password })
-      ),
-    };
+    const authUrl = new URL("https://api.medplum.com/oauth2/authorize");
+    authUrl.searchParams.append("response_type", "code");
+    authUrl.searchParams.append("client_id", process.env.MEDPLUM_CLIENT_ID!);
+    authUrl.searchParams.append(
+      "redirect_uri",
+      "http://localhost:3000/api/auth/callback"
+    );
+    authUrl.searchParams.append("scope", "openid profile email");
+    authUrl.searchParams.append(
+      "state",
+      encodeURIComponent(JSON.stringify({ firstName, lastName, email, password }))
+    );
 
-    // Initiate sign-in with redirect
-    await medplum.signInWithRedirect(loginParams);
-
-
+    // Redirect to the authorization URL
+    return NextResponse.redirect(authUrl.toString());
   } catch (error) {
     console.error("Error inviting user:", error);
     return NextResponse.json(
