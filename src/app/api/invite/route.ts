@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { MedplumClient } from "@medplum/core";
+import { medplum } from "@/libs/medplumClient";
 
-export const medplum = new MedplumClient({
-  baseUrl: "https://api.medplum.com/",
-  clientId: process.env.MEDPLUM_CLIENT_ID,
-  clientSecret: process.env.MEDPLUM_CLIENT_SECRET,
-});
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,7 +10,7 @@ export async function POST(req: NextRequest) {
     const response = await medplum.post(
       `admin/projects/${projectId}/invite`,
       {
-        resourceType: "Patient",
+        resourceType: "Practitioner",
         firstName: firstName,
         lastName: lastName,
         email: email,
@@ -23,6 +18,8 @@ export async function POST(req: NextRequest) {
         sendEmail: false
       }
     );
+
+    console.log(response)
 
     const authUrl = new URL("https://api.medplum.com/oauth2/authorize");
     authUrl.searchParams.append("response_type", "code");
@@ -34,7 +31,7 @@ export async function POST(req: NextRequest) {
     authUrl.searchParams.append("scope", "openid profile email");
     authUrl.searchParams.append(
       "state",
-      encodeURIComponent(JSON.stringify({ firstName, lastName, email }))
+      encodeURIComponent(JSON.stringify({ firstName, lastName, email, password }))
     );
 
     return NextResponse.redirect(authUrl.toString());

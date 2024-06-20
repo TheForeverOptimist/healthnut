@@ -46,7 +46,7 @@ export async function GET(req: Request) {
     );
 
     const payload = {
-      resourceType: "Patient",
+      resourceType: "Practitioner",
       name: [{ given: [firstName], family: lastName }],
       email,
       sendEmail: false,
@@ -58,7 +58,8 @@ export async function GET(req: Request) {
       },
     });
 
-    return NextResponse.json({ message: "Patient created!", response });
+
+    return NextResponse.json({message: "Practitioner created!"})
   } catch (error) {
     console.error("Error inviting user:", error);
     return NextResponse.json(

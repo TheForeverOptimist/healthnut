@@ -21,7 +21,9 @@ const Invite = ({ setPage }: InviteProps): JSX.Element => {
     });
     if (response.ok) {
       const data = await response.json();
-      window.location.href = data.authUrl;
+      if(data.message === "Practitioner created!"){
+        setPage("dashboard")
+      }
       // alert('Invitation Complete!')
       // setPage('verify')
     } else {

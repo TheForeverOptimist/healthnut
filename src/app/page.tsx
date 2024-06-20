@@ -4,7 +4,6 @@ import React from "react";
 import { useState } from "react";
 import Header from "./components/Header/header";
 import Hero from "./components/Hero/page";
-import { useSession } from "next-auth/react";
 import Dashboard from "./components/Dashboard/dashboard";
 import Invite from "./components/Invite/invite";
 import Login from "./components/Login/login";
@@ -22,18 +21,9 @@ export default function Home(): JSX.Element {
   return (
     <main className="container">
       <Header setPage={setPage} user={session?.user} />
-      {status === "loading" ? (
-        <p>Loading...</p>
-      ) : session ? (
-        <Dashboard />
-      ) : (
-        <>
-          
           {page === "home" && <Hero setPage={setPage} />}
           {page === "begin" &&  <Invite setPage={setPage} />}
           {page === "dashboard" && <Dashboard />}
-        </>
-      )}
     </main>
   );
 }
