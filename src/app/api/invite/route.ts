@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { medplum } from "@/libs/medplumClient";
 
-
 export async function POST(req: NextRequest) {
   try {
     const { firstName, lastName, email, password } = await req.json();
@@ -25,12 +24,15 @@ export async function POST(req: NextRequest) {
       "redirect_uri",
       "http://localhost:3000/api/auth/callback"
     );
-    authUrl.searchParams.append("scope", "openid profile email");
     authUrl.searchParams.append(
       "state",
-      encodeURIComponent(JSON.stringify({ firstName, lastName, email, password }))
+      encodeURIComponent(
+        JSON.stringify({ firstName, lastName, email, password })
+      )
     );
+    authUrl.searchParams.append("scope", "openid");
 
+    console.log(authUrl.toString());
     // Redirect to the authorization URL
     return NextResponse.redirect(authUrl.toString());
   } catch (error) {
