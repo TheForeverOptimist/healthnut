@@ -1,11 +1,6 @@
 import { NextResponse } from "next/server";
-import { MedplumClient } from "@medplum/core";
+import { medplum } from "@/libs/medplumClient";
 
-export const medplum = new MedplumClient({
-  baseUrl: "https://api.medplum.com/",
-  clientId: process.env.MEDPLUM_CLIENT_ID,
-  clientSecret: process.env.MEDPLUM_CLIENT_SECRET,
-});
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -39,24 +34,6 @@ export async function GET(req: Request) {
     if(!accessToken){
       throw new Error("Access token is missing")
     }
-
-    // Extract user data from state
-    const { firstName, lastName, email } = JSON.parse(
-      decodeURIComponent(state!)
-    );
-
-    const payload = {
-      resourceType: "Practitioner",
-      name: [{ given: [firstName], family: lastName }],
-      email,
-      sendEmail: false,
-    };
-
-    const response = await medplum.createResource(payload, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
 
 
     return NextResponse.json({message: "Practitioner created!"})
