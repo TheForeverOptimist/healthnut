@@ -17,7 +17,7 @@ const Invite = ({ setPage }: InviteProps): JSX.Element => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ firstName, lastName, email }),
+      body: JSON.stringify({ firstName, lastName, email, password }),
     });
     if (response.ok) {
       const data = await response.json();

@@ -25,12 +25,12 @@ export default function Home(): JSX.Element {
       {status === "loading" ? (
         <p>Loading...</p>
       ) : session ? (
-        <Dashboard user={setUser} />
+        <Dashboard />
       ) : (
         <>
           
           {page === "home" && <Hero setPage={setPage} />}
-          {page === "begin" && <FindPatient setPage={setPage} />}
+          {page === "begin" &&  <Invite setPage={setPage} />}
           {page === "dashboard" && <Dashboard />}
         </>
       )}
