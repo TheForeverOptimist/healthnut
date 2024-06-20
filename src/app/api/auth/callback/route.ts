@@ -17,11 +17,17 @@ export async function GET(req: NextRequest) {
   const clientSecret = process.env.MEDPLUM_CLIENT_SECRET!;
   const redirectUri = "http://localhost:3000/api/auth/callback";
 
+  console.log("Received code:", code);
+  console.log("Using client ID:", clientId);
+  console.log("Using redirect URI:", redirectUri);
+
   // Construct the Basic Authorization header
   const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString(
     "base64"
   );
   const authorizationHeader = `Basic${basicAuth}`;
+
+  console.log(authorizationHeader)
 
   try {
     // Exchange authorization code for access token

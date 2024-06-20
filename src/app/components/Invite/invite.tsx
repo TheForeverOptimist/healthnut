@@ -27,8 +27,13 @@ const Invite = ({ setPage }: InviteProps): JSX.Element => {
       // alert('Invitation Complete!')
       // setPage('verify')
     } else {
-      const errorData = await response.json();
-      alert(`Error: ${errorData.message}`);
+      const errorText = await response.text();
+        try {
+          const errorData = JSON.parse(errorText);
+          alert(`Error: ${errorData.message}`);
+        } catch (e) {
+          alert(`Error: ${errorText}`);
+        }
     }
   };
   return (
