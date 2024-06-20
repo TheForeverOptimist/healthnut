@@ -3,10 +3,11 @@
 import React, {useState} from 'react'
 
 
+
 const Dashboard = () => {
   return(
     <div>
-      <h1>Welcome to the dashboard</h1>
+      <h1>Welcome to the dashboard, work in progress.</h1>
     </div>
   )
 }

@@ -17,24 +17,30 @@ export async function POST(req: NextRequest) {
 
     console.log(response);
 
-    const authUrl = new URL("https://api.medplum.com/oauth2/authorize");
-    authUrl.searchParams.append("response_type", "code");
-    authUrl.searchParams.append("client_id", process.env.MEDPLUM_CLIENT_ID!);
-    authUrl.searchParams.append(
-      "redirect_uri",
-      "http://localhost:3000/api/auth/callback"
-    );
-    authUrl.searchParams.append(
-      "state",
-      encodeURIComponent(
-        JSON.stringify({ firstName, lastName, email, password })
-      )
-    );
-    authUrl.searchParams.append("scope", "openid");
+    //the below commented out string continues to return a Client Not Found error, have tried everything, will ask Rahul
+    //for now will just redirect to dashboard
 
-    console.log(authUrl.toString());
-    // Redirect to the authorization URL
-    return NextResponse.redirect(authUrl.toString());
+    // const authUrl = new URL("https://api.medplum.com/oauth2/authorize");
+    // authUrl.searchParams.append("response_type", "code");
+    // authUrl.searchParams.append("client_id", process.env.MEDPLUM_CLIENT_ID!);
+    // authUrl.searchParams.append(
+    //   "redirect_uri",
+    //   "http://localhost:3000/api/auth/callback"
+    // );
+    // authUrl.searchParams.append(
+    //   "state",
+    //   encodeURIComponent(
+    //     JSON.stringify({ firstName, lastName, email, password })
+    //   )
+    // );
+    // authUrl.searchParams.append("scope", "openid profile email");
+
+    // console.log(authUrl.toString());
+    
+    // return NextResponse.redirect(authUrl.toString());
+
+
+    return NextResponse.json({message: "Practitioner created!"})
   } catch (error) {
     console.error("Error inviting user:", error);
     return NextResponse.json(

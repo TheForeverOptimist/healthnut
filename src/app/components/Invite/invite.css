@@ -1,0 +1,44 @@
+.inviteSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+  height: 87vh;
+  padding: 1em;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.inviteForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  background-color: #fff;
+  padding: 2em;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.inviteForm input {
+  margin-bottom: 1em;
+  padding: 0.5em;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.inviteForm button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: rgb(159, 207, 110);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.inviteForm button:hover {
+  background-color: rgb(139, 187, 90);
+}

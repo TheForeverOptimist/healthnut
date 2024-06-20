@@ -14,3 +14,9 @@
 .notes-section {
   margin-bottom: 20px;
 }
+
+h1{
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}

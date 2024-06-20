@@ -12,14 +12,10 @@ import FindPatient from "./components/FindPatient/findpatient";
 export default function Home(): JSX.Element {
   const [page, setPage] = useState<string>("home");
 
-  // const handleLogin = (userData) => {
-  //   setUser(userData)
-  //   setPage("dashboard")
-  // }
 
   return (
     <main className="container">
-      <Header setPage={setPage} />
+      <Header setPage={setPage}/>
           {page === "home" && <Hero setPage={setPage} />}
           {page === "begin" &&  <Invite setPage={setPage} />}
           {page === "dashboard" && <Dashboard />}
