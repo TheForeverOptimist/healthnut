@@ -15,3 +15,7 @@ export const parseClientCookies = () => {
   }
   return {};
 };
+
+export const clearCookie = (name: string) => {
+  document.cookie = `${name}=; max-age=0; path=/; secure; samesite=strict;`;
+};
