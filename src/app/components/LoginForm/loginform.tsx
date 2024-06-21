@@ -1,58 +1,60 @@
 import React, { useState } from "react";
-import './loginform.css'
+import "./loginform.css";
 import { useRouter } from "next/navigation";
-
+import { medplum } from "@/libs/medplumClient";
 
 const LoginForm = (): JSX.Element => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter()
-
-  const sendDash = () => {
-    router.push('/Dashboard')
-  }
+  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const loginResponse = await medplum.startLogin({
+        email,
+        password,
       });
-      if (response.ok) {
-        sendDash();
+
+      if (loginResponse.memberships && loginResponse.memberships.length > 0) {
+        const primaryMembership = loginResponse.memberships[0];
+        document.cookie = `medplumProfile=${encodeURIComponent(
+          JSON.stringify(primaryMembership.profile)
+        )}; max-age=${30 * 24 * 60 * 60}; path=/; secure; samesite=strict`;
       } else {
-        setError("Invalid email or password");
+        document.cookie = `medplumLogin=${encodeURIComponent(
+          loginResponse.login
+        )}; max-age=${30 * 24 * 60 * 60}; path=/; secure; samesite=strict`;
       }
+
+      router.push("/dashboard");
     } catch (err) {
-      console.error("Error Logging in:", err);
+      console.error("Error logging in:", err);
+      setError("Invalid email or password");
     }
   }
 
   return (
     <section className="loginSection">
       <form className="loginForm" onSubmit={handleSubmit}>
-        
-          <label> Email:</label>
-          <input
-            type="email"
-            value={email}
-            placeholder="Email Address"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        
-        
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-       
+        <label> Email:</label>
+        <input
+          type="email"
+          value={email}
+          placeholder="Email Address"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <label>Password:</label>
+        <input
+          type="password"
+          value={password}
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
         {error && <p>{error}</p>}
         <button type="submit">Login!</button>
       </form>
