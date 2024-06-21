@@ -4,14 +4,24 @@ import Image from "next/image";
 import Link from "next/link";
 import "./Header.css";
 import { useRouter } from "next/navigation";
+import { parseClientCookies, clearCookie } from "@/libs/cookies";
 
 import React from "react";
 
 export default function Header(): JSX.Element {
   const router = useRouter();
+  const cookies = parseClientCookies();
+  const isLoggedIn = cookies.medplumProfile || cookies.medplumLogin;
+
   const handleInviteClick = () => {
     router.push("/Invite");
   };
+
+  const handleLogout = () => {
+    clearCookie('medplumProfile');
+    clearCookie('medplumLogin');
+    router.push('/')
+  }
 
   return (
     <nav className="navbar">
@@ -23,12 +33,20 @@ export default function Header(): JSX.Element {
         <Link className="common" href="/">
           Home
         </Link>
-        <Link href="/Login" className="common">
-          Login
-        </Link>
-        <button className="begin" onClick={handleInviteClick}>
-          Begin
-        </button>
+        {!isLoggedIn && (
+          <Link href="/Login" className="common">
+            Login
+          </Link>
+        )}
+        {isLoggedIn ? (
+          <button className="begin" onClick={handleLogout}>
+            Logout
+          </button>
+        ) : (
+          <button className="begin" onClick={handleInviteClick}>
+            Begin
+          </button>
+        )}
       </div>
     </nav>
   );
