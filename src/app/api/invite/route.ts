@@ -17,8 +17,8 @@ export async function POST(req: NextRequest) {
 
     console.log(response);
 
-    //the below commented out string continues to return a Client Not Found error, have tried everything, will ask Rahul
-    //for now will just redirect to dashboard
+    // the below commented out string continues to return a Client Not Found error, have tried everything, will ask Rahul
+    // for now will just redirect to dashboard
 
     // const authUrl = new URL("https://api.medplum.com/oauth2/authorize");
     // authUrl.searchParams.append("response_type", "code");
