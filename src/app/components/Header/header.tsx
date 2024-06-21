@@ -24,9 +24,9 @@ export default function Header({user, setPage}: HeaderProps): JSX.Element{
         <Link className="common" href="/">
           Home
         </Link>
-        <Link className="common" href="/">
-          About us
-        </Link>
+        <button className="login" onClick={(e) => setPage('login')}>
+          Login
+        </button>
         <button className="begin" onClick={() => setPage('begin')}>
           Begin
         </button>

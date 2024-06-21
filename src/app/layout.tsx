@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "Post visit summarizer for physicians and patients",
 };
 
+
+
 export default function RootLayout({
   children,
 }: {
