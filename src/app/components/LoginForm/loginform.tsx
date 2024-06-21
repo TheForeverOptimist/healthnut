@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import './loginform.css'
+import { useRouter } from "next/navigation";
 
 
 const LoginForm = (): JSX.Element => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter()
+
+  const sendDash = () => {
+    router.push('/Dashboard')
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -17,7 +23,7 @@ const LoginForm = (): JSX.Element => {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
-        console.log('need to add route')
+        sendDash();
       } else {
         setError("Invalid email or password");
       }

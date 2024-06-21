@@ -4,7 +4,7 @@ import React from "react";
 import { useState } from "react";
 import Header from "./components/Header/header";
 import Hero from "./components/Hero/hero";
-import Dashboard from "./components/Dashboard/dashboard";
+import Dashboard from "./Dashboard/page";
 import Invite from "./Invite/page";
 import LoginForm from "./components/LoginForm/loginform";
 
