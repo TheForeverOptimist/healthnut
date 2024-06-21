@@ -29,7 +29,7 @@ const LoginForm = (): JSX.Element => {
         )}; max-age=${30 * 24 * 60 * 60}; path=/; secure; samesite=strict`;
       }
 
-      router.push("/dashboard");
+      router.push("/Dashboard");
     } catch (err) {
       console.error("Error logging in:", err);
       setError("Invalid email or password");
