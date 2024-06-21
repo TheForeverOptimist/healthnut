@@ -1,11 +1,10 @@
+"use client"
+
 import React, { useState } from "react";
 import './invite.css'
+import Header from "../components/Header/header";
 
-interface InviteProps {
-  setPage: (page: string) => void;
-}
-
-const Invite = ({ setPage }: InviteProps): JSX.Element => {
+const Invite = (): JSX.Element => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -23,7 +22,7 @@ const Invite = ({ setPage }: InviteProps): JSX.Element => {
     if (response.ok) {
       const data = await response.json();
       if (data.message === "Practitioner created!") {
-        setPage("dashboard");
+        console.log('add router')
       }
       // alert('Invitation Complete!')
       // setPage('verify')
@@ -38,6 +37,8 @@ const Invite = ({ setPage }: InviteProps): JSX.Element => {
     }
   };
   return (
+    <>
+    <Header />
     <section className="inviteSection">
       <form className="inviteForm" onSubmit={handleSubmit}>
         <input
@@ -72,6 +73,7 @@ const Invite = ({ setPage }: InviteProps): JSX.Element => {
         <button type="submit">Create Account</button>
       </form>
     </section>
+    </>
   );
 };
 

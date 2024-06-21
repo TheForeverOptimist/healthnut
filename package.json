@@ -9,22 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mantine/core": "^7.10.2",
-    "@mantine/hooks": "^7.10.2",
-    "@mantine/notifications": "^7.10.2",
     "@medplum/core": "^3.1.8",
-    "@medplum/react": "^3.1.8",
     "buffer": "^6.0.3",
-    "css-loader": "^7.1.2",
     "next": "14.2.4",
     "next-auth": "^4.24.7",
     "next-themes": "^0.3.0",
-    "postcss": "^8.4.38",
-    "postcss-loader": "^8.1.1",
-    "postcss-preset-mantine": "^1.15.0",
     "react": "^18",
-    "react-dom": "^18",
-    "style-loader": "^4.0.0"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import './loginform.css'
 
-interface LoginProps {
-  setPage: (page: string) => void;
-}
 
-const LoginForm = ({ setPage }: LoginProps): JSX.Element => {
+const LoginForm = (): JSX.Element => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,7 +17,7 @@ const LoginForm = ({ setPage }: LoginProps): JSX.Element => {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
-        setPage("dashboard");
+        console.log('need to add route')
       } else {
         setError("Invalid email or password");
       }

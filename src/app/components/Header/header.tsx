@@ -3,17 +3,16 @@ import logo from "../../images/healthnut_transparent.png";
 import Image from "next/image";
 import Link from "next/link";
 import "./Header.css";
+import { useRouter } from "next/navigation";
 
 import React from "react";
 
-interface HeaderProps {
-  setPage: (page: string) => void;
-  user?: {
-    name?: string | null | undefined;
+export default function Header(): JSX.Element {
+  const router = useRouter();
+  const handleInviteClick = () => {
+    router.push("/Invite");
   };
-}
 
-export default function Header({user, setPage}: HeaderProps): JSX.Element{
   return (
     <nav className="navbar">
       <div className="navbar-left">
@@ -24,10 +23,10 @@ export default function Header({user, setPage}: HeaderProps): JSX.Element{
         <Link className="common" href="/">
           Home
         </Link>
-        <button className="login" onClick={(e) => setPage('login')}>
+        <Link href="/Login" className="common">
           Login
-        </button>
-        <button className="begin" onClick={() => setPage('begin')}>
+        </Link>
+        <button className="begin" onClick={handleInviteClick}>
           Begin
         </button>
       </div>
