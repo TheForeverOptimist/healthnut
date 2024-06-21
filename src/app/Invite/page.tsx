@@ -3,12 +3,39 @@
 import React, { useState } from "react";
 import './invite.css'
 import Header from "../components/Header/header";
+import { useRouter } from "next/navigation";
+import { medplum } from "@/libs/medplumClient";
 
 const Invite = (): JSX.Element => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const router = useRouter()
+
+  async function handleLogin() {
+        try {
+      const loginResponse = await medplum.startLogin({
+        email,
+        password,
+      });
+
+      if (loginResponse.memberships && loginResponse.memberships.length > 0) {
+        const primaryMembership = loginResponse.memberships[0];
+        document.cookie = `medplumProfile=${encodeURIComponent(
+          JSON.stringify(primaryMembership.profile)
+        )}; max-age=${30 * 24 * 60 * 60}; path=/; secure; samesite=strict`;
+      } else {
+        document.cookie = `medplumLogin=${encodeURIComponent(
+          loginResponse.login
+        )}; max-age=${30 * 24 * 60 * 60}; path=/; secure; samesite=strict`;
+      }
+
+      router.push("/Dashboard");
+    } catch (err) {
+      console.error("Error logging in:", err);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,10 +49,8 @@ const Invite = (): JSX.Element => {
     if (response.ok) {
       const data = await response.json();
       if (data.message === "Practitioner created!") {
-        console.log('add router')
+        handleLogin()
       }
-      // alert('Invitation Complete!')
-      // setPage('verify')
     } else {
       const errorText = await response.text();
       try {

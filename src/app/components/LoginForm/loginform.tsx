@@ -18,6 +18,8 @@ const LoginForm = (): JSX.Element => {
         password,
       });
 
+      console.log(loginResponse)
+
       if (loginResponse.memberships && loginResponse.memberships.length > 0) {
         const primaryMembership = loginResponse.memberships[0];
         document.cookie = `medplumProfile=${encodeURIComponent(
@@ -28,8 +30,8 @@ const LoginForm = (): JSX.Element => {
           loginResponse.login
         )}; max-age=${30 * 24 * 60 * 60}; path=/; secure; samesite=strict`;
       }
-
-      router.push("/Dashboard");
+      const encodedEmail = encodeURIComponent(email)
+      router.push(`/Dashboard?email=${encodedEmail}`);
     } catch (err) {
       console.error("Error logging in:", err);
       setError("Invalid email or password");
