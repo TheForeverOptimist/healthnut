@@ -44,9 +44,11 @@ const Dashboard = () => {
     <main suppressHydrationWarning>
       <DynamicHeader />
       <div className="dashboard">
-        <div className="left-side">
-          <label>Enter Patient Name</label>
-          <form className="patientForm" onSubmit={handleCreatePatient}>
+        <div className="box patientForm">
+          <form onSubmit={handleCreatePatient}>
+            <label htmlFor="patientForm" className="patientLabel">
+              Enter Patient Name
+            </label>
             <input
               type="text"
               placeholder="First Name"
@@ -62,10 +64,37 @@ const Dashboard = () => {
             <button type="submit">Create Patient</button>
           </form>
         </div>
-        <div className="right-side">
-          
-         
+        <div className="box pdfLoader"></div>
+          <div className="box resourcesSheet">
+      <h3>Patient Resources</h3>
+      <p>John Doe</p>
+      <div className="resourcesColumns">
+        <div className="column">
+          <h4>PDFs</h4>
+          <ul>
+            <li>PDF 1</li>
+            <li>PDF 2</li>
+          </ul>
         </div>
+        <div className="column">
+          <h4>Voice Notes</h4>
+          <ul>
+            <li>Voice Note 1</li>
+            <li>Voice Note 2</li>
+           
+          </ul>
+        </div>
+        <div className="column">
+          <h4>AI Suggestions</h4>
+          <ul>
+            <li>Suggestion 1</li>
+            <li>Suggestion 2</li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+        <div className="box voiceRecorder"></div>
       </div>
     </main>
   );
