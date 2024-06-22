@@ -65,6 +65,9 @@
   align-self: center;
   margin-bottom: 1em;
 }
+.patientForm{
+  grid-area: patient
+}
 
 .pdfLoader{
   grid-area: pdf;

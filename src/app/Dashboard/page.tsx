@@ -7,6 +7,7 @@ import { parseClientCookies } from "@/libs/cookies";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import "./dashboard.css";
+import UploadDropZone from "../components/UploadDropZone/uploaddropzone";
 
 const DynamicHeader = dynamic(() => import("../components/Header/header"), {
   ssr: false,
@@ -41,7 +42,7 @@ const Dashboard = () => {
   //  }
 
   return (
-    <main suppressHydrationWarning>
+    <>
       <DynamicHeader />
       <div className="dashboard">
         <div className="box patientForm">
@@ -65,47 +66,42 @@ const Dashboard = () => {
           </form>
         </div>
         <div className="box pdfLoader">
-          <label>Upload PDF or Document</label>
-          <div onDragOver={(e) => e.preventDefault()} className="dropzone">
-            Drag and drop a file here or click to select a file
+          <UploadDropZone />
+        </div>
+        <div className="box resourcesSheet">
+          <h3>Patient Resources</h3>
+          <p>John Doe</p>
+          <div className="resourcesColumns">
+            <div className="column">
+              <h4>PDFs</h4>
+              <ul>
+                <li>PDF 1</li>
+                <li>PDF 2</li>
+              </ul>
+            </div>
+            <div className="column">
+              <h4>Voice Notes</h4>
+              <ul>
+                <li>Voice Note 1</li>
+                <li>Voice Note 2</li>
+              </ul>
+            </div>
+            <div className="column">
+              <h4>AI Suggestions</h4>
+              <ul>
+                <li>Suggestion 1</li>
+                <li>Suggestion 2</li>
+              </ul>
+            </div>
           </div>
         </div>
-          <div className="box resourcesSheet">
-      <h3>Patient Resources</h3>
-      <p>John Doe</p>
-      <div className="resourcesColumns">
-        <div className="column">
-          <h4>PDFs</h4>
-          <ul>
-            <li>PDF 1</li>
-            <li>PDF 2</li>
-          </ul>
-        </div>
-        <div className="column">
-          <h4>Voice Notes</h4>
-          <ul>
-            <li>Voice Note 1</li>
-            <li>Voice Note 2</li>
-           
-          </ul>
-        </div>
-        <div className="column">
-          <h4>AI Suggestions</h4>
-          <ul>
-            <li>Suggestion 1</li>
-            <li>Suggestion 2</li>
-            
-          </ul>
-        </div>
-      </div>
-    </div>
         <div className="box voiceRecorder">
           <label>Record Patient Note</label>
           <button>Start Recording</button>
           <div className="sound-wave">Sound wave visualization here</div>
         </div>
       </div>
-    </main>
+    </>
   );
 };
 
