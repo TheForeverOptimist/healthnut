@@ -8,6 +8,9 @@ import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import "./dashboard.css";
 import UploadDropZone from "../components/UploadDropZone/uploaddropzone";
+import PatientForm from "../components/PatientForm/patientform";
+import ResourceSheet from "../components/ResourceSheet/resourcesheet";
+import VoiceRecorder from "../components/VoiceRecorder/voicerecorder";
 
 const DynamicHeader = dynamic(() => import("../components/Header/header"), {
   ssr: false,
@@ -16,12 +19,7 @@ const DynamicHeader = dynamic(() => import("../components/Header/header"), {
 const Dashboard = () => {
   // const [name, setName] = useState<string>('')
   //  const searchParams = useSearchParams()
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
 
-  const handleCreatePatient = () => {
-    console.log("create patient");
-  };
 
   //  useEffect(() => {
   //   const email = searchParams.get('email')
@@ -45,61 +43,12 @@ const Dashboard = () => {
     <>
       <DynamicHeader />
       <div className="dashboard">
-        <div className="box patientForm">
-          <form onSubmit={handleCreatePatient}>
-            <label htmlFor="patientForm" className="patientLabel">
-              Enter Patient Name
-            </label>
-            <input
-              type="text"
-              placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-            <button type="submit">Create Patient</button>
-          </form>
-        </div>
+        <PatientForm />
         <div className="box pdfLoader">
           <UploadDropZone />
         </div>
-        <div className="box resourcesSheet">
-          <h3>Patient Resources</h3>
-          <p>John Doe</p>
-          <div className="resourcesColumns">
-            <div className="column">
-              <h4>PDFs</h4>
-              <ul>
-                <li>PDF 1</li>
-                <li>PDF 2</li>
-              </ul>
-            </div>
-            <div className="column">
-              <h4>Voice Notes</h4>
-              <ul>
-                <li>Voice Note 1</li>
-                <li>Voice Note 2</li>
-              </ul>
-            </div>
-            <div className="column">
-              <h4>AI Suggestions</h4>
-              <ul>
-                <li>Suggestion 1</li>
-                <li>Suggestion 2</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div className="box voiceRecorder">
-          <label>Record Patient Note</label>
-          <button>Start Recording</button>
-          <div className="sound-wave">Sound wave visualization here</div>
-        </div>
+        <ResourceSheet />
+        <VoiceRecorder />
       </div>
     </>
   );
