@@ -17,37 +17,22 @@ const DynamicHeader = dynamic(() => import("../components/Header/header"), {
 });
 
 const Dashboard = () => {
-  // const [name, setName] = useState<string>('')
-  //  const searchParams = useSearchParams()
+  const [patientName, setPatientName] = useState('')
 
+  const namePatient = (firstName: string, lastName: string) => {
+    setPatientName(`${firstName} ${lastName}`)
+  }
 
-  //  useEffect(() => {
-  //   const email = searchParams.get('email')
-  //   if(email){
-  //     const decodedEmail = decodeURIComponent(email)
-  //     fetchName(decodedEmail);
-  //   }
-  //  }, [searchParams])
-
-  //  async function fetchName(email: string){
-  //   try{
-  //     const response = await medplum.search('Practitioner', `telecom.value=${email}`)
-  //     console.log(response)
-
-  //   }catch(err){
-  //     console.error('Error Message: ', err)
-  //   }
-  //  }
 
   return (
     <>
       <DynamicHeader />
       <div className="dashboard">
-        <PatientForm />
+        <PatientForm onCreatePatient={namePatient} />
         <div className="box pdfLoader">
           <UploadDropZone />
         </div>
-        <ResourceSheet />
+        <ResourceSheet patientName={patientName} />
         <VoiceRecorder />
       </div>
     </>

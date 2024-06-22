@@ -1,11 +1,15 @@
 import React from "react";
 import "../../Dashboard/dashboard.css";
 
-const ResourceSheet = () => {
+interface ResourceSheetProps {
+  patientName: string;
+}
+
+const ResourceSheet: React.FC<ResourceSheetProps> = ({patientName}) => {
   return (
     <div className="box resourcesSheet">
       <h3>Patient Resources</h3>
-      <p>John Doe</p>
+      {patientName && <p>Patient Name: {patientName}</p>}
       <div className="resourcesColumns">
         <div className="column">
           <h4>PDFs</h4>
