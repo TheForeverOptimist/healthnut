@@ -64,7 +64,12 @@ const Dashboard = () => {
             <button type="submit">Create Patient</button>
           </form>
         </div>
-        <div className="box pdfLoader"></div>
+        <div className="box pdfLoader">
+          <label>Upload PDF or Document</label>
+          <div onDragOver={(e) => e.preventDefault()} className="dropzone">
+            Drag and drop a file here or click to select a file
+          </div>
+        </div>
           <div className="box resourcesSheet">
       <h3>Patient Resources</h3>
       <p>John Doe</p>
@@ -94,7 +99,11 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-        <div className="box voiceRecorder"></div>
+        <div className="box voiceRecorder">
+          <label>Record Patient Note</label>
+          <button>Start Recording</button>
+          <div className="sound-wave">Sound wave visualization here</div>
+        </div>
       </div>
     </main>
   );
