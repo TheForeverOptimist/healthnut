@@ -5,7 +5,7 @@ import { medplum } from "@/libs/medplumClient";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
-  const email = searchParams.get("email")
+  const email = searchParams.get("email");
 
   if (!code) {
     return NextResponse.json(
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
-   const decodedEmail = decodeURIComponent(email!);
+  const decodedEmail = decodeURIComponent(email!);
 
   const tokenUrl = "https://api.medplum.com/oauth2/token";
   const clientId = process.env.MEDPLUM_CLIENT_ID!;
@@ -31,14 +31,14 @@ export async function GET(req: NextRequest) {
   );
   const authorizationHeader = `Basic${basicAuth}`;
 
-  console.log(authorizationHeader)
+  console.log(authorizationHeader);
 
   try {
     // Exchange authorization code for access token
     const tokenResponse = await fetch(tokenUrl, {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        "Content-Type": "application/x-www-form-urlencoded",
         Authorization: authorizationHeader,
       },
       body: new URLSearchParams({
@@ -48,72 +48,67 @@ export async function GET(req: NextRequest) {
       }),
     });
 
-     const responseText = await tokenResponse.text();
-     if (!tokenResponse.ok) {
-       console.error("Error during token exchange:", responseText);
-       return NextResponse.json(
-         { message: "Error during token exchange.", error: responseText },
-         { status: tokenResponse.status }
-       );
-     }
+    const responseText = await tokenResponse.text();
+    if (!tokenResponse.ok) {
+      console.error("Error during token exchange:", responseText);
+      return NextResponse.json(
+        { message: "Error during token exchange.", error: responseText },
+        { status: tokenResponse.status }
+      );
+    }
 
-     const tokenData = JSON.parse(responseText);
-     const accessToken = tokenData.access_token;
-     const refreshToken = tokenData.refresh_token;
-
+    const tokenData = JSON.parse(responseText);
+    const accessToken = tokenData.access_token;
+    const refreshToken = tokenData.refresh_token;
 
     if (!accessToken || !refreshToken) {
       throw new Error("Access token or Refresh Token is missing");
     }
 
-    await medplum.setAccessToken(accessToken)
+    await medplum.setAccessToken(accessToken);
     const profile = medplum.getProfile();
     const project = medplum.getProject();
 
-    if(!profile || !project){
-      throw new Error("Profile or project is missing")
+    if (!profile || !project) {
+      throw new Error("Profile or project is missing");
     }
 
     await medplum.setActiveLogin({
       accessToken,
       refreshToken,
       profile,
-      project
-    })
+      project,
+    });
 
-
-     const userInfoResponse = await fetch(
-       "https://api.medplum.com/oauth2/userinfo",
-       {
-         headers: {
-           Authorization: `Bearer ${accessToken}`,
-         },
-       }
-     );
-
-     if (!userInfoResponse.ok) {
-       const userInfoText = await userInfoResponse.text();
-       console.error("Error fetching user info:", userInfoText);
-       return NextResponse.json(
-         { message: "Error fetching user info.", error: userInfoText },
-         { status: userInfoResponse.status }
-       );
-     }
-
-     const userInfo = await userInfoResponse.json();
-
-        const cookieOptions = {
-          maxAge: 30 * 24 * 60 * 60, // 30 days
-          path: "/",
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: true,
-        };
-
-
-    const response = NextResponse.redirect(
-      `/Dashboard`
+    const userInfoResponse = await fetch(
+      "https://api.medplum.com/oauth2/userinfo",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     );
+
+    if (!userInfoResponse.ok) {
+      const userInfoText = await userInfoResponse.text();
+      console.error("Error fetching user info:", userInfoText);
+      return NextResponse.json(
+        { message: "Error fetching user info.", error: userInfoText },
+        { status: userInfoResponse.status }
+      );
+    }
+
+    const userInfo = await userInfoResponse.json();
+
+    const cookieOptions = {
+      maxAge: 30 * 24 * 60 * 60, // 30 days
+      path: "/",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: true,
+    };
+
+    const response = NextResponse.redirect(`/Dashboard`);
     response.cookies.set("medplumAccessToken", accessToken, cookieOptions);
     response.cookies.set("medplumRefreshToken", refreshToken, cookieOptions);
     response.cookies.set(
