@@ -48,10 +48,19 @@ export async function GET(req: NextRequest) {
       }),
     });
 
+     const responseText = await tokenResponse.text();
+     if (!tokenResponse.ok) {
+       console.error("Error during token exchange:", responseText);
+       return NextResponse.json(
+         { message: "Error during token exchange.", error: responseText },
+         { status: tokenResponse.status }
+       );
+     }
 
-    const tokenData = await tokenResponse.json();
-    const accessToken = tokenData.access_token;
-    const refreshToken = tokenData.refresh_token;
+     const tokenData = JSON.parse(responseText);
+     const accessToken = tokenData.access_token;
+     const refreshToken = tokenData.refresh_token;
+
 
     if (!accessToken || !refreshToken) {
       throw new Error("Access token or Refresh Token is missing");
@@ -71,6 +80,7 @@ export async function GET(req: NextRequest) {
       profile,
       project
     })
+
 
      const userInfoResponse = await fetch(
        "https://api.medplum.com/oauth2/userinfo",
@@ -92,17 +102,27 @@ export async function GET(req: NextRequest) {
 
      const userInfo = await userInfoResponse.json();
 
-    document.cookie = `medplumAccessToken=${accessToken}; max-age=${
-      30 * 24 * 60 * 60
-    }; path=/; secure; samesite=strict`;
-    document.cookie = `medplumRefreshToken=${refreshToken}; max-age=${
-      30 * 24 * 60 * 60
-    }; path=/; secure; samesite=strict`;
-    document.cookie = `medplumUserInfo=${encodeURIComponent(JSON.stringify(userInfo))}; max-age=${30* 24 * 60 * 60}; path=/; secure; samesite=strict`;
+        const cookieOptions = {
+          maxAge: 30 * 24 * 60 * 60, // 30 days
+          path: "/",
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: true,
+        };
 
-    return NextResponse.redirect(
+
+    const response = NextResponse.redirect(
       `/Dashboard`
     );
+    response.cookies.set("medplumAccessToken", accessToken, cookieOptions);
+    response.cookies.set("medplumRefreshToken", refreshToken, cookieOptions);
+    response.cookies.set(
+      "medplumUserInfo",
+      JSON.stringify(userInfo),
+      cookieOptions
+    );
+
+    return response;
   } catch (error) {
     console.error("Error during OAuth callback:", error);
     return NextResponse.json(
