@@ -18,10 +18,10 @@ const LoginForm = (): JSX.Element => {
         password,
       });
 
-      console.log(loginResponse);
+      console.log(loginResponse.code);
 
-      if (loginResponse.login) {
-        const code = loginResponse.login;
+      if (loginResponse.code) {
+        const code = loginResponse.code;
         document.cookie = `medplumCode=${code}; max-age=${
           30 * 24 * 60 * 60
         }; path=/; secure; samesite=strict`;
