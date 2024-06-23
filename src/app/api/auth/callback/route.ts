@@ -16,12 +16,13 @@ export async function GET(req: NextRequest) {
   }
 
   const tokenUrl = "https://api.medplum.com/oauth2/token";
-  const clientId = process.env.MEDPLUM_CLIENT_ID!;
-  const clientSecret = process.env.MEDPLUM_CLIENT_SECRET!;
+  const clientId = process.env.MEDPLUM_CLIENT_ID;
+  const clientSecret = process.env.MEDPLUM_CLIENT_SECRET;
   const redirectUri = "http://localhost:3000/api/auth/callback";
 
   console.log("Received code:", code);
   console.log("Using client ID:", clientId);
+  console.log("Using client Secret:", clientSecret)
   console.log("Using redirect URI:", redirectUri);
 
   // Construct the Basic Authorization header
@@ -42,7 +43,7 @@ export async function GET(req: NextRequest) {
       },
       body: new URLSearchParams({
         grant_type: "authorization_code",
-        client_id: clientId,
+        client_id: clientId!,
         code: code,
         redirect_uri: redirectUri,
       }),
