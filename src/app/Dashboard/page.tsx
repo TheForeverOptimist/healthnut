@@ -17,7 +17,15 @@ const DynamicHeader = dynamic(() => import("../components/Header/header"), {
 });
 
 const Dashboard = () => {
-  const [patientName, setPatientName] = useState('')
+  const [userName, setUserName] = useState('');
+  const [patientName, setPatientName] = useState("");
+
+  useEffect(() => {
+      const cookies = parseClientCookies();
+      const userInfo = cookies.medplumuserInfo ? JSON.parse(decodeURIComponent(cookies.medplumUserInfo)): null;
+      setUserName(`${userInfo.name}`)
+    
+  }, [userName])
 
   const namePatient = (firstName: string, lastName: string) => {
     setPatientName(`${firstName} ${lastName}`)
@@ -27,6 +35,7 @@ const Dashboard = () => {
   return (
     <>
       <DynamicHeader />
+      <h2 style={{marginLeft: '20px'}}>Welcome, Dr. {userName}</h2>
       <div className="dashboard">
         <PatientForm onCreatePatient={namePatient} />
         <div className="box pdfLoader">

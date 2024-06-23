@@ -53,16 +53,44 @@ export async function GET(req: NextRequest) {
     const accessToken = tokenData.access_token;
     const refreshToken = tokenData.refresh_token;
 
-    if (!accessToken) {
-      throw new Error("Access token is missing");
+    if (!accessToken || !refreshToken) {
+      throw new Error("Access token or Refresh Token is missing");
+    }
+
+    await medplum.setAccessToken(accessToken)
+    const profile = medplum.getProfile();
+    const project = medplum.getProject();
+
+    if(!profile || !project){
+      throw new Error("Profile or project is missing")
     }
 
     await medplum.setActiveLogin({
       accessToken,
       refreshToken,
-      profile: medplum.getProfile(),
-      project: medplum.getProject(),
+      profile,
+      project
     })
+
+     const userInfoResponse = await fetch(
+       "https://api.medplum.com/oauth2/userinfo",
+       {
+         headers: {
+           Authorization: `Bearer ${accessToken}`,
+         },
+       }
+     );
+
+     if (!userInfoResponse.ok) {
+       const userInfoText = await userInfoResponse.text();
+       console.error("Error fetching user info:", userInfoText);
+       return NextResponse.json(
+         { message: "Error fetching user info.", error: userInfoText },
+         { status: userInfoResponse.status }
+       );
+     }
+
+     const userInfo = await userInfoResponse.json();
 
     document.cookie = `medplumAccessToken=${accessToken}; max-age=${
       30 * 24 * 60 * 60
@@ -70,9 +98,10 @@ export async function GET(req: NextRequest) {
     document.cookie = `medplumRefreshToken=${refreshToken}; max-age=${
       30 * 24 * 60 * 60
     }; path=/; secure; samesite=strict`;
+    document.cookie = `medplumUserInfo=${encodeURIComponent(JSON.stringify(userInfo))}; max-age=${30* 24 * 60 * 60}; path=/; secure; samesite=strict`;
 
     return NextResponse.redirect(
-      `/Dashboard?email=${decodedEmail}`
+      `/Dashboard`
     );
   } catch (error) {
     console.error("Error during OAuth callback:", error);
