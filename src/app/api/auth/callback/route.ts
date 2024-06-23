@@ -42,6 +42,7 @@ export async function GET(req: NextRequest) {
       },
       body: new URLSearchParams({
         grant_type: "authorization_code",
+        client_id: clientId,
         code: code,
         redirect_uri: redirectUri,
       }),
