@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
   const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString(
     "base64"
   );
-  const authorizationHeader = `Basic${basicAuth}`;
+  const authorizationHeader = `Basic ${basicAuth}`;
 
   console.log(authorizationHeader);
 
