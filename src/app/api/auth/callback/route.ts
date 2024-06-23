@@ -5,16 +5,15 @@ import { medplum } from "@/libs/medplumClient";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
-  const email = searchParams.get("email");
 
   if (!code) {
     return NextResponse.json(
       { message: "Authorization code not provided." },
       { status: 400 }
     );
+  } else {
+    console.log("Auth code is: ", code);
   }
-
-  const decodedEmail = decodeURIComponent(email!);
 
   const tokenUrl = "https://api.medplum.com/oauth2/token";
   const clientId = process.env.MEDPLUM_CLIENT_ID!;
