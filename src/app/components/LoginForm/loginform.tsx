@@ -18,20 +18,16 @@ const LoginForm = (): JSX.Element => {
         password,
       });
 
-      console.log(loginResponse)
+      console.log(loginResponse);
 
-      if (loginResponse.memberships && loginResponse.memberships.length > 0) {
-        const primaryMembership = loginResponse.memberships[0];
-        document.cookie = `medplumProfile=${encodeURIComponent(
-          JSON.stringify(primaryMembership.profile)
-        )}; max-age=${30 * 24 * 60 * 60}; path=/; secure; samesite=strict`;
-      } else {
-        document.cookie = `medplumLogin=${encodeURIComponent(
-          loginResponse.login
-        )}; max-age=${30 * 24 * 60 * 60}; path=/; secure; samesite=strict`;
+      if (loginResponse.login) {
+        const code = loginResponse.login;
+        document.cookie = `medplumCode=${code}; max-age=${
+          30 * 24 * 60 * 60
+        }; path=/; secure; samesite=strict`;
+        const encodedEmail = encodeURIComponent(email);
+        router.push(`/api/auth/callback?code=${code}&email=${encodedEmail}`);
       }
-      const encodedEmail = encodeURIComponent(email)
-      router.push(`/Dashboard?email=${encodedEmail}`);
     } catch (err) {
       console.error("Error logging in:", err);
       setError("Invalid email or password");

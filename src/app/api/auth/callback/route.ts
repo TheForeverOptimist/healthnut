@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Buffer } from "buffer";
+import { medplum } from "@/libs/medplumClient";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
+  const email = searchParams.get("email")
 
   if (!code) {
     return NextResponse.json(
@@ -11,6 +13,8 @@ export async function GET(req: NextRequest) {
       { status: 400 }
     );
   }
+
+   const decodedEmail = decodeURIComponent(email!);
 
   const tokenUrl = "https://api.medplum.com/oauth2/token";
   const clientId = process.env.MEDPLUM_CLIENT_ID!;
@@ -44,28 +48,32 @@ export async function GET(req: NextRequest) {
       }),
     });
 
-    // Log the raw response text for debugging
-    const responseText = await tokenResponse.text();
-    console.log("Token Exchange Response:", responseText);
 
-    if (!tokenResponse.ok) {
-      // Log the response text for debugging
-      console.error("Error during token exchange:", responseText);
-      return NextResponse.json(
-        { message: "Error during token exchange.", error: responseText },
-        { status: tokenResponse.status }
-      );
-    }
-
-    const tokenData = JSON.parse(responseText);
+    const tokenData = await tokenResponse.json();
     const accessToken = tokenData.access_token;
+    const refreshToken = tokenData.refresh_token;
 
     if (!accessToken) {
       throw new Error("Access token is missing");
     }
 
-    // Redirect to the dashboard or send a response to the frontend to set the page to 'dashboard'
-    return NextResponse.json({ message: "Practitioner created!" });
+    await medplum.setActiveLogin({
+      accessToken,
+      refreshToken,
+      profile: medplum.getProfile(),
+      project: medplum.getProject(),
+    })
+
+    document.cookie = `medplumAccessToken=${accessToken}; max-age=${
+      30 * 24 * 60 * 60
+    }; path=/; secure; samesite=strict`;
+    document.cookie = `medplumRefreshToken=${refreshToken}; max-age=${
+      30 * 24 * 60 * 60
+    }; path=/; secure; samesite=strict`;
+
+    return NextResponse.redirect(
+      `/Dashboard?email=${decodedEmail}`
+    );
   } catch (error) {
     console.error("Error during OAuth callback:", error);
     return NextResponse.json(
