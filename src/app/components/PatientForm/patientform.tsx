@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../Dashboard/dashboard.css";
 import { medplum } from "@/libs/medplumClient";
-import { parseClientCookies } from "@/libs/cookies";
+import './patientform.css'
 
 interface PatientFormProps {
   onCreatePatient: (firstName: string, lastName: string) => void;
@@ -10,6 +10,7 @@ interface PatientFormProps {
 const PatientForm = ({ onCreatePatient }: PatientFormProps) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const handleCreatePatient = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,13 +28,17 @@ const PatientForm = ({ onCreatePatient }: PatientFormProps) => {
 
       await medplum.createResource(patientResource);
       onCreatePatient(firstName, lastName);
+      setFirstName("");
+      setLastName("");
+      setIsDisabled(true)
+
     } catch (err) {
       console.error("Error creating patient: ", err);
     }
   };
 
   return (
-    <div className="box patientForm">
+    <div className={`box patientForm ${isDisabled ? "disabled": ''}`}>
       <form onSubmit={handleCreatePatient}>
         <label htmlFor="patientForm" className="patientLabel">
           Enter Patient Name

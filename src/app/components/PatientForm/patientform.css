@@ -1,0 +1,10 @@
+.patientForm.disabled {
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.patientForm input:disabled,
+.patientForm button:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
