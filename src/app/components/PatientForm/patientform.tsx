@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "../../Dashboard/dashboard.css";
 import { medplum } from "@/libs/medplumClient";
+import { parseClientCookies } from "@/libs/cookies";
 
 interface PatientFormProps {
   onCreatePatient: (firstName: string, lastName: string) => void;
 }
 
-const PatientForm = ({onCreatePatient}: PatientFormProps) => {
+const PatientForm = ({ onCreatePatient }: PatientFormProps) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
@@ -24,20 +25,6 @@ const PatientForm = ({onCreatePatient}: PatientFormProps) => {
         ],
       };
 
-      // Check for the authentication token
-      const accessToken = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("medplumAccessToken="))
-        ?.split("=")[1];
-
-      if (!accessToken) {
-        throw new Error("User is not authenticated");
-      }
-
-      // Set the token in the Medplum client
-      medplum.setAccessToken(accessToken);
-
-      // Create the patient resource
       await medplum.createResource(patientResource);
       onCreatePatient(firstName, lastName);
     } catch (err) {

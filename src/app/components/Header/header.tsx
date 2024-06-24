@@ -11,15 +11,15 @@ import React from "react";
 export default function Header(): JSX.Element {
   const router = useRouter();
   const cookies = parseClientCookies();
-  const isLoggedIn = cookies.medplumProfile || cookies.medplumLogin;
+  const isLoggedIn = cookies.medplumAccessToken || cookies.medplumUserInfo;
 
   const handleInviteClick = () => {
     router.push("/Invite");
   };
 
   const handleLogout = () => {
-    clearCookie('medplumProfile');
-    clearCookie('medplumLogin');
+    clearCookie('medplumAccessToken');
+    clearCookie('medplumUserInfo');
     router.push('/')
   }
 

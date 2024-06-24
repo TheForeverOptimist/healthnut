@@ -101,7 +101,6 @@ export async function GET(req: NextRequest) {
     const cookieOptions = {
       maxAge: 30 * 24 * 60 * 60, // 30 days
       path: "/",
-      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: true,
     };

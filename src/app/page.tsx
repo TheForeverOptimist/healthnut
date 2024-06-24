@@ -13,10 +13,10 @@ export default function Home(): JSX.Element {
 
   useEffect(() => {
     const cookies = parseClientCookies();
-    const medplumProfile = cookies.medplumProfile;
-    const medplumLogin = cookies.medplumLogin;
+    const medplumAccessToken = cookies.medplumAccessToken;
+    const medplumUserInfo = cookies.medplumUserInfo;
 
-    if(medplumProfile || medplumLogin){
+    if(medplumAccessToken || medplumUserInfo){
       router.push('/Dashboard')
     }
   }, [router])
