@@ -4,26 +4,33 @@ import { medplum } from "@/libs/medplumClient";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const code = searchParams.get("code");
+  // const code = searchParams.get("code");
 
-  if (!code) {
-    return NextResponse.json(
-      { message: "Authorization code not provided." },
-      { status: 400 }
-    );
-  } else {
-    console.log("Auth code is: ", code);
-  }
+  // if (!code) {
+  //   return NextResponse.json(
+  //     { message: "Authorization code not provided." },
+  //     { status: 400 }
+  //   );
+  // } else {
+  //   console.log("Auth code is: ", code);
+  // }
 
   const tokenUrl = "https://api.medplum.com/oauth2/token";
   const clientId = process.env.MEDPLUM_CLIENT_ID;
   const clientSecret = process.env.MEDPLUM_CLIENT_SECRET;
-  const redirectUri = "http://localhost:3000/api/auth/callback"; 
+  const redirectUri = "http://localhost:3000/api/auth/callback";
 
-  console.log("Received code:", code);
+  // console.log("Received code:", code);
   console.log("Using client ID:", clientId);
-  console.log("Using client Secret:", clientSecret)
-  console.log("Using redirect URI:", redirectUri);
+  console.log("Using client Secret:", clientSecret);
+  // console.log("Using redirect URI:", redirectUri);
+
+  if (!clientId || !clientSecret) {
+    return NextResponse.json(
+      { message: "Client ID or Secret not provided." },
+      { status: 500 }
+    );
+  }
 
   // Construct the Basic Authorization header
   const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString(
@@ -33,22 +40,25 @@ export async function GET(req: NextRequest) {
 
   console.log(authorizationHeader);
 
+  const formData = new URLSearchParams();
+  formData.append("grant_type", "client_credentials");
+  formData.append("scope", "openid");
+
+  console.log("Form Data:", formData.toString());
+
   try {
     // Exchange authorization code for access token
     const tokenResponse = await fetch(tokenUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        "Authorization": authorizationHeader,
+        Authorization: authorizationHeader,
       },
-      //@ts-ignore
-      body: new URLSearchParams({
-        grant_type: "client_credentials",
-        scope: "openid profile email",
-      }),
+      body: formData,
     });
 
     const responseText = await tokenResponse.text();
+    console.log(responseText);
     if (!tokenResponse.ok) {
       console.error("Error during token exchange:", responseText);
       return NextResponse.json(
@@ -61,24 +71,11 @@ export async function GET(req: NextRequest) {
     const accessToken = tokenData.access_token;
     const refreshToken = tokenData.refresh_token;
 
-    if (!accessToken || !refreshToken) {
+    if (!accessToken) {
       throw new Error("Access token or Refresh Token is missing");
     }
 
     await medplum.setAccessToken(accessToken);
-    const profile = medplum.getProfile();
-    const project = medplum.getProject();
-
-    if (!profile || !project) {
-      throw new Error("Profile or project is missing");
-    }
-
-    await medplum.setActiveLogin({
-      accessToken,
-      refreshToken,
-      profile,
-      project,
-    });
 
     const userInfoResponse = await fetch(
       "https://api.medplum.com/oauth2/userinfo",
@@ -99,6 +96,7 @@ export async function GET(req: NextRequest) {
     }
 
     const userInfo = await userInfoResponse.json();
+    console.log("User Info before cookie set: ", userInfo);
 
     const cookieOptions = {
       maxAge: 30 * 24 * 60 * 60, // 30 days
@@ -108,9 +106,10 @@ export async function GET(req: NextRequest) {
       sameSite: true,
     };
 
-    const response = NextResponse.redirect(`/Dashboard`);
+    const response = NextResponse.redirect(
+      `${process.env.DEV_BASE_URL}/Dashboard`
+    );
     response.cookies.set("medplumAccessToken", accessToken, cookieOptions);
-    response.cookies.set("medplumRefreshToken", refreshToken, cookieOptions);
     response.cookies.set(
       "medplumUserInfo",
       JSON.stringify(userInfo),

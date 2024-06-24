@@ -21,11 +21,16 @@ const Dashboard = () => {
   const [patientName, setPatientName] = useState("");
 
   useEffect(() => {
-      const cookies = parseClientCookies();
-      const userInfo = cookies.medplumuserInfo ? JSON.parse(decodeURIComponent(cookies.medplumUserInfo)): null;
-      setUserName(`${userInfo.name}`)
-    
-  }, [userName])
+    const cookies = parseClientCookies();
+    console.log("Cookies: ", cookies)
+    const userInfo = cookies.medplumUserInfo
+      ? JSON.parse(decodeURIComponent(cookies.medplumUserInfo))
+      : null;
+    console.log("User Info after Cookie set:", userInfo)
+    if (userInfo) {
+      setUserName(userInfo.name);
+    }
+  }, []);
 
   const namePatient = (firstName: string, lastName: string) => {
     setPatientName(`${firstName} ${lastName}`)

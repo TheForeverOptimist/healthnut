@@ -12,21 +12,20 @@ const LoginForm = (): JSX.Element => {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
+    console.log("handleSubmit called");
+
     try {
       const loginResponse = await medplum.startLogin({
         email,
         password,
       });
 
-      console.log(loginResponse.code);
-
       if (loginResponse.code) {
         const code = loginResponse.code;
         document.cookie = `medplumCode=${code}; max-age=${
           30 * 24 * 60 * 60
         }; path=/; secure; samesite=strict`;
-        const encodedEmail = encodeURIComponent(email);
-        router.push(`/api/auth/callback?code=${code}&email=${encodedEmail}`);
+        router.push(`/api/auth/callback`);
       }
     } catch (err) {
       console.error("Error logging in:", err);
