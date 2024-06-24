@@ -18,7 +18,6 @@ const DynamicHeader = dynamic(() => import("../components/Header/header"), {
 });
 
 const Dashboard = () => {
-  const [patientName, setPatientName] = useState("");
   const [patient, setPatient] = useState<Patient | null>(null)
 
   useEffect(() => {
@@ -31,7 +30,7 @@ const Dashboard = () => {
     }
   }, []);
 
-  const handleCreatePatient = (patient: Patient) => {
+  const assignNewPatient = (patient: Patient) => {
     setPatient(patient)
   }
 
@@ -39,11 +38,11 @@ const Dashboard = () => {
     <>
       <DynamicHeader />
       <div className="dashboard">
-        <PatientForm onCreatePatient={handleCreatePatient} />
+        <PatientForm onCreatePatient={assignNewPatient} />
         <div className="box pdfLoader">
           <UploadDropZone />
         </div>
-        <ResourceSheet patientName={patientName} />
+        <ResourceSheet patient={patient} />
         <VoiceRecorder />
       </div>
     </>

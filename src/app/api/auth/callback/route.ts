@@ -69,7 +69,6 @@ export async function GET(req: NextRequest) {
 
     const tokenData = JSON.parse(responseText);
     const accessToken = tokenData.access_token;
-    const refreshToken = tokenData.refresh_token;
 
     if (!accessToken) {
       throw new Error("Access token or Refresh Token is missing");

@@ -1,11 +1,16 @@
 import React from "react";
 import "../../Dashboard/dashboard.css";
+import { Patient } from "@/libs/types";
 
 interface ResourceSheetProps {
-  patientName: string;
+  patient: Patient | null;
 }
 
-const ResourceSheet: React.FC<ResourceSheetProps> = ({patientName}) => {
+const ResourceSheet : React.FC<ResourceSheetProps> = ({patient}) => {
+  const patientName = patient?.name?.[0]
+    ? `${patient.name[0].given[0]} ${patient.name[0].family}`
+    : "";
+
   return (
     <div className="box resourcesSheet">
       <h3>Patient Resources</h3>

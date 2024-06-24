@@ -7,19 +7,18 @@ import { parseClientCookies } from "@/libs/cookies";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-
 export default function Home(): JSX.Element {
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const cookies = parseClientCookies();
     const medplumAccessToken = cookies.medplumAccessToken;
     const medplumUserInfo = cookies.medplumUserInfo;
 
-    if(medplumAccessToken || medplumUserInfo){
-      router.push('/Dashboard')
+    if (medplumAccessToken || medplumUserInfo) {
+      router.push("/Dashboard");
     }
-  }, [router])
+  }, [router]);
 
   return (
     <main className="container">
