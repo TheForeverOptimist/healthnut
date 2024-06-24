@@ -42,7 +42,9 @@
 }
 
 .dz-text-bold {
-  font-weight: 600;
+  font-style:italic;
+  color: darkgreen
+
 }
 
 .dz-subtext {

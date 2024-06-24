@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import "../../Dashboard/dashboard.css";
 import { medplum } from "@/libs/medplumClient";
 import './patientform.css'
+import { Patient } from "@/libs/types";
 
 interface PatientFormProps {
-  onCreatePatient: (firstName: string, lastName: string) => void;
+  onCreatePatient: (patient: Patient) => void;
 }
 
 const PatientForm = ({ onCreatePatient }: PatientFormProps) => {
@@ -24,10 +25,16 @@ const PatientForm = ({ onCreatePatient }: PatientFormProps) => {
             family: lastName,
           },
         ],
+        identifier: [
+          {
+            system: "healthnut",
+            value: `${firstName}-${lastName}`,
+          },
+        ],
       };
 
-      await medplum.createResource(patientResource);
-      onCreatePatient(firstName, lastName);
+      const patient = await medplum.createResource(patientResource);
+      onCreatePatient(patient);
       setFirstName("");
       setLastName("");
       setIsDisabled(true)

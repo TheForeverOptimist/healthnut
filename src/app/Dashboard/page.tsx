@@ -11,6 +11,7 @@ import UploadDropZone from "../components/UploadDropZone/uploaddropzone";
 import PatientForm from "../components/PatientForm/patientform";
 import ResourceSheet from "../components/ResourceSheet/resourcesheet";
 import VoiceRecorder from "../components/VoiceRecorder/voicerecorder";
+import { Patient } from "@/libs/types";
 
 const DynamicHeader = dynamic(() => import("../components/Header/header"), {
   ssr: false,
@@ -18,6 +19,7 @@ const DynamicHeader = dynamic(() => import("../components/Header/header"), {
 
 const Dashboard = () => {
   const [patientName, setPatientName] = useState("");
+  const [patient, setPatient] = useState<Patient | null>(null)
 
   useEffect(() => {
     const cookies = parseClientCookies();
@@ -29,15 +31,15 @@ const Dashboard = () => {
     }
   }, []);
 
-  const namePatient = (firstName: string, lastName: string) => {
-    setPatientName(`${firstName} ${lastName}`);
-  };
+  const handleCreatePatient = (patient: Patient) => {
+    setPatient(patient)
+  }
 
   return (
     <>
       <DynamicHeader />
       <div className="dashboard">
-        <PatientForm onCreatePatient={namePatient} />
+        <PatientForm onCreatePatient={handleCreatePatient} />
         <div className="box pdfLoader">
           <UploadDropZone />
         </div>
