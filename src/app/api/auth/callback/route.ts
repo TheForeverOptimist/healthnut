@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
   const tokenUrl = "https://api.medplum.com/oauth2/token";
   const clientId = process.env.MEDPLUM_CLIENT_ID;
   const clientSecret = process.env.MEDPLUM_CLIENT_SECRET;
-  const redirectUri = "http://localhost:3000/api/auth/callback";
+  const redirectUri = "http://localhost:3000/api/auth/callback"; 
 
   console.log("Received code:", code);
   console.log("Using client ID:", clientId);
@@ -39,13 +39,12 @@ export async function GET(req: NextRequest) {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: authorizationHeader,
+        "Authorization": authorizationHeader,
       },
+      //@ts-ignore
       body: new URLSearchParams({
-        grant_type: "authorization_code",
-        client_id: clientId!,
-        code: code,
-        redirect_uri: redirectUri,
+        grant_type: "client_credentials",
+        scope: "openid profile email",
       }),
     });
 
