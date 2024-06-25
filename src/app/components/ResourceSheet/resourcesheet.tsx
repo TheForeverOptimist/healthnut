@@ -4,9 +4,15 @@ import { Patient } from "@/libs/types";
 
 interface ResourceSheetProps {
   patient: Patient | null;
+  pdfFiles: {
+    contentType: string;
+    url: string;
+    title: string;
+    creation: string;
+  }[];
 }
 
-const ResourceSheet : React.FC<ResourceSheetProps> = ({patient}) => {
+const ResourceSheet : React.FC<ResourceSheetProps> = ({patient, pdfFiles}) => {
   const patientName = patient?.name?.[0]
     ? `${patient.name[0].given[0]} ${patient.name[0].family}`
     : "";
@@ -19,8 +25,11 @@ const ResourceSheet : React.FC<ResourceSheetProps> = ({patient}) => {
         <div className="column">
           <h4>PDFs</h4>
           <ul>
-            <li>PDF 1</li>
-            <li>PDF 2</li>
+            {pdfFiles.map((file, index) => (
+              <li key={index}>
+                <a href={file.url} target="_blank" rel="noopener noreferrer">{file.title}</a>
+              </li>
+            ))}
           </ul>
         </div>
         <div className="column">

@@ -18,7 +18,8 @@ const DynamicHeader = dynamic(() => import("../components/Header/header"), {
 });
 
 const Dashboard = () => {
-  const [patient, setPatient] = useState<Patient | null>(null)
+  const [patient, setPatient] = useState<Patient | null>(null);
+  const [pdfFiles, setPdfFiles] = useState<any>([]);
 
   useEffect(() => {
     const cookies = parseClientCookies();
@@ -34,15 +35,19 @@ const Dashboard = () => {
     setPatient(patient)
   }
 
+  const handleUploadComplete = (attachment: any) => {
+    setPdfFiles([...pdfFiles, attachment])
+  }
+
   return (
     <>
       <DynamicHeader />
       <div className="dashboard">
         <PatientForm onCreatePatient={assignNewPatient} />
         <div className="box pdfLoader">
-          <UploadDropZone />
+          <UploadDropZone patient={patient} onUploadComplete={handleUploadComplete} />
         </div>
-        <ResourceSheet patient={patient} />
+        <ResourceSheet patient={patient} pdfFiles={pdfFiles} />
         <VoiceRecorder />
       </div>
     </>

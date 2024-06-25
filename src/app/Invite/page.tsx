@@ -19,23 +19,25 @@ const Invite = (): JSX.Element => {
         email,
         password,
       });
-
-      if (loginResponse.memberships && loginResponse.memberships.length > 0) {
-        const primaryMembership = loginResponse.memberships[0];
-        document.cookie = `medplumProfile=${encodeURIComponent(
-          JSON.stringify(primaryMembership.profile)
-        )}; max-age=${30 * 24 * 60 * 60}; path=/; secure; samesite=strict`;
-      } else {
-        document.cookie = `medplumLogin=${encodeURIComponent(
-          loginResponse.login
-        )}; max-age=${30 * 24 * 60 * 60}; path=/; secure; samesite=strict`;
-      }
-
-      router.push("/Dashboard");
+      if (loginResponse.code) {
+        router.push(`/api/auth/callback`);
+      } 
     } catch (err) {
       console.error("Error logging in:", err);
     }
   };
+
+      // if (loginResponse.memberships && loginResponse.memberships.length > 0) {
+      //   const primaryMembership = loginResponse.memberships[0];
+      //   document.cookie = `medplumProfile=${encodeURIComponent(
+      //     JSON.stringify(primaryMembership.profile)
+      //   )}; max-age=${30 * 24 * 60 * 60}; path=/; secure; samesite=strict`;
+      // } else {
+      //   document.cookie = `medplumLogin=${encodeURIComponent(
+      //     loginResponse.login
+      //   )}; max-age=${30 * 24 * 60 * 60}; path=/; secure; samesite=strict`;
+      // }
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
