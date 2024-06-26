@@ -9,15 +9,18 @@ import { medplum } from "@/libs/medplumClient";
 import { Patient } from "@/libs/types";
 
 interface UploadProps{
-  patient: Patient | null,
+  patients: Patient[];
+  selectedPatient: Patient | null;
   onUploadComplete: (attachment: any) => void
 }
 
-const UploadDropZone = ({patient, onUploadComplete}: UploadProps) => {
+
+
+const UploadDropZone = ({patients, selectedPatient, onUploadComplete}: UploadProps) => {
 
  const onDrop = useCallback(
    async (acceptedFiles: File[]) => {
-     if (!patient) {
+     if (!selectedPatient) {
        console.error("No patient selected");
        return;
      }
@@ -41,7 +44,7 @@ const UploadDropZone = ({patient, onUploadComplete}: UploadProps) => {
              ],
              text: "PDF Document"
            },
-           subject: { reference: `Patient/${patient.id}` },
+           subject: { reference: `Patient/${selectedPatient.id}` },
            content: [
              {
                attachment: {
@@ -64,7 +67,7 @@ const UploadDropZone = ({patient, onUploadComplete}: UploadProps) => {
        }
      }
    },
-   [patient, onUploadComplete]
+   [selectedPatient, onUploadComplete]
  );
 
  const {getRootProps, getInputProps} = useDropzone({onDrop, maxSize: 4 * 1024 * 1024})

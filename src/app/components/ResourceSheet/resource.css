@@ -1,0 +1,113 @@
+
+
+.resourcesSheet{
+  grid-area: resource;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+  align-items: flex-start;
+  width: 100%;
+  padding: 1em;
+  padding-top: 0;
+}
+
+.resourcesSheet h3 {
+  margin-top: 0;
+  margin-bottom: 5px;
+  align-self: flex-start;
+}
+
+.resourcesSheet p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  align-self: flex-start;
+}
+
+.resourcesColumns{
+  display: flex;
+  gap:10px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.column h4 {
+  margin-bottom: 10px;
+}
+
+.column li {
+  background-color: #e0e0e0;
+  padding: 10px;
+  border-radius: 5px;
+  list-style-type: none;
+}
+.resourcesSheet ul{
+  display: contents;
+}
+
+.resourcesSheet li {
+  background-color: #e0e0e0;
+  padding: 8px;
+  border-radius: 5px;
+  list-style-type: none;
+}
+
+.tabs {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.tabs button {
+  padding: 0.8em;
+  font-size: 1em;
+  cursor: pointer;
+  border: none;
+  background-color: #f2f2f2;
+  border-bottom: 2px solid transparent;
+  margin-right: 1em;
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+}
+
+.tabs button.active{
+    border-bottom: 2px solid lightgreen;
+    font-weight: bold;
+}
+
+.tab-content{
+    margin-top: 1em;
+}
+
+.patient-list{
+    max-height: 400px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.patient-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.patient-list li {
+    padding: 0.5rem;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc
+}
+
+.patient-list li:hover{
+    background-color: #f0f0f0
+}
+
+

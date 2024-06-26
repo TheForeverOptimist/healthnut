@@ -22,8 +22,8 @@
   box-shadow: (0 4px 6px rgba(0, 0, 0, 0.3));
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .formTitle{
@@ -73,60 +73,7 @@
   grid-area: pdf;
 }
 
-.resourcesSheet{
-  grid-area: resource;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  overflow: hidden;
-}
 
-.resourcesSheet h3 {
-  margin-top: 0; /* Remove any default top margin */
-  margin-bottom: 5px; /* Reduce space between heading and patient name */
-  align-self: flex-start; /* Align heading to the start of the flex container */
-}
-
-.resourcesSheet p {
-  margin-top: 0; /* Remove any default top margin */
-  margin-bottom: 10px; /* Adjust space between patient name and resource columns */
-  align-self: flex-start; /* Align patient name to the start of the flex container */
-}
-
-.resourcesColumns{
-  display: flex;
-  gap:10px;
-  width: 100%;
-  overflow-y: auto;
-}
-
-.column {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.column h4 {
-  margin-bottom: 10px;
-}
-
-.column li {
-  background-color: #e0e0e0;
-  padding: 10px;
-  border-radius: 5px;
-  list-style-type: none;
-}
-.resourcesSheet ul{
-  display: contents;
-}
-
-.resourcesSheet li {
-  background-color: #e0e0e0;
-  padding: 8px;
-  border-radius: 5px;
-  list-style-type: none;
-}
 
 .voiceRecorder{
   grid-area: audio;
