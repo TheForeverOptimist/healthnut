@@ -93,21 +93,49 @@
     max-height: 400px;
     overflow-y: auto;
     width: 100%;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0 ,0, 0,1);
 }
 
 .patient-list ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .patient-list li {
     padding: 0.5rem;
     cursor: pointer;
-    border-bottom: 1px solid #ccc
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s, border-left 0.3s;
+}
+
+.patient-list li:last-child {
+  border-bottom: none;
+
 }
 
 .patient-list li:hover{
-    background-color: #f0f0f0
+    background-color: #f0f0f0;
+    border-left: 4px solid #8bc34a;
 }
 
+.patient-list li.active {
+  background-color: #c8e6c9;
+  border-left: 4px solid #4caf50;
+}
 
+.patient-list li:hover .patient-name {
+  color: #4caf50;
+}
+
+.patient-name {
+  flex-grow: 1;
+  font-size: 1rem;
+  color: #333;
+  transition: color 0.3s;
+}

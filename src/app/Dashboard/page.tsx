@@ -13,11 +13,13 @@ import ResourceSheet from "../components/ResourceSheet/resourcesheet";
 import VoiceRecorder from "../components/VoiceRecorder/voicerecorder";
 import { Patient } from "@/libs/types";
 
-
 const Dashboard = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null)
-  const [pdfFiles, setPdfFiles] = useState<any[]>([]);
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+  const [resources, setResources] = useState<any>({
+    documentReferences: [],
+    observations: [],
+  });
 
   useEffect(() => {
     const cookies = parseClientCookies();
@@ -30,22 +32,40 @@ const Dashboard = () => {
   }, []);
 
   const assignNewPatient = (patient: Patient) => {
-    setSelectedPatient(patient)
-  }
+    setSelectedPatient(patient);
+  };
 
   const handleUploadComplete = (attachment: any) => {
-    setPdfFiles([...pdfFiles, attachment])
-  }
-
+    if (attachment.resourceType === "DocumentReference") {
+      setResources((prevResources: any) => ({
+        ...prevResources,
+        documentReferences: [...prevResources.documentReferences, attachment],
+      }));
+    } else if (attachment.resourceType === "Observation") {
+      setResources((prevResources: any) => ({
+        ...prevResources,
+        observations: [...prevResources.observations, attachment],
+      }));
+    }
+  };
   return (
     <>
       <Header />
       <div className="dashboard">
         <PatientForm onCreatePatient={assignNewPatient} />
         <div className="box pdfLoader">
-          <UploadDropZone patients={patients} selectedPatient={selectedPatient} onUploadComplete={handleUploadComplete} />
+          <UploadDropZone
+            patients={patients}
+            selectedPatient={selectedPatient}
+            onUploadComplete={handleUploadComplete}
+          />
         </div>
-        <ResourceSheet patients={patients} pdfFiles={pdfFiles} />
+        <ResourceSheet
+          patients={patients}
+          selectedPatient={selectedPatient}
+          setSelectedPatient={setSelectedPatient}
+          resources={resources}
+        />
         <VoiceRecorder />
       </div>
     </>

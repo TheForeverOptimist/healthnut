@@ -2,33 +2,44 @@ import React, { useState, useEffect } from "react";
 import "../../Dashboard/dashboard.css";
 import { Patient } from "@/libs/types";
 import "./resource.css";
+import { medplum } from "@/libs/medplumClient";
 
 interface ResourceSheetProps {
   patients: Patient[];
-  pdfFiles: {
-    contentType: string;
-    url: string;
-    title: string;
-    creation: string;
+  selectedPatient: Patient | null;
+  setSelectedPatient: (patient: Patient) => void;
+  resources: {
+    documentReferences: any[];
+    observations: any[];
   }[];
 }
 
+const fetchPatientResources = async (patientId: string) => {
+  const documentReferences = await medplum.search("DocumentReference", {
+    subject: `Patient/${patientId}`,
+  });
+  const observations = await medplum.search("Observation", {
+    subject: `Patient/${patientId}`,
+  });
+
+  return {
+    documentReferences: [],
+    observations: [],
+  };
+};
+
 const ResourceSheet: React.FC<ResourceSheetProps> = ({
   patients,
-  pdfFiles,
+  selectedPatient,
+  setSelectedPatient,
+  resources,
 }) => {
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [activeTab, setActiveTab] = useState("list");
 
-  useEffect(() => {
-    if (patients.length > 0 && !selectedPatient) {
-      setSelectedPatient(patients[0]);
-    }
-  }, [patients, selectedPatient]);
-
   const selectPatient = (patient: Patient) => {
-    setSelectedPatient(patient);
     setActiveTab("resource");
+    fetchPatientResources(patient.id!);
+    setSelectedPatient(patient);
   };
 
   const patientName = selectedPatient?.name?.[0]
@@ -57,7 +68,9 @@ const ResourceSheet: React.FC<ResourceSheetProps> = ({
             <ul>
               {patients.map((patient, index) => (
                 <li key={index} onClick={() => selectPatient(patient)}>
-                  {patient.name[0].given[0]} {patient.name[0].family}
+                  <span className="patient-name">
+                    {patient.name[0].given[0]} {patient.name[0].family}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -65,32 +78,43 @@ const ResourceSheet: React.FC<ResourceSheetProps> = ({
         )}
         {activeTab === "resource" && selectedPatient && (
           <div>
-            <h3>
-              Patient: {selectedPatient.name[0].given}{" "}
-              {selectedPatient.name[0].family}
-            </h3>
+            <h3>Patient: {patientName}</h3>
             <div className="resourcesColumns">
               <div className="column">
                 <h4>PDFs</h4>
                 <ul>
-                  {pdfFiles.map((file, index) => (
-                    <li key={index}>
-                      <a
-                        href={file.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {file.title}
-                      </a>
-                    </li>
-                  ))}
+                  {resources[0].documentReferences.map(
+                    (file: any, index: number) => (
+                      <li key={index}>
+                        <a
+                          href={file.content[0].attachment.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {file.content[0].attachment.title}
+                        </a>
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
               <div className="column">
                 <h4>Voice Notes</h4>
                 <ul>
-                  <li>Voice Note 1</li>
-                  <li>Voice Note 2</li>
+                  {resources[0].observations.map((note: any, index: number) => (
+                    <li key={index}>
+                      <a
+                        href={note.valueAttachment.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {note.valueAttachment.title}
+                      </a>
+                      <p>
+                        Recorded on: {new Date(note.issued).toLocaleString()}
+                      </p>
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="column">

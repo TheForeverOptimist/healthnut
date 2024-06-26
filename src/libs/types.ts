@@ -2,7 +2,6 @@
 
 export interface Patient {
   resourceType: string;
-  id?: string;
   name: {
     given: string[];
     family: string;
@@ -11,4 +10,5 @@ export interface Patient {
     system: string;
     value: string;
   }[];
+  id?: string;
 }
