@@ -11,7 +11,8 @@
   background-color: #f9fafb;
   transition: background-color 0.2s border-color 0.2s;
   padding: 1rem;
-  box-sizing: border-box
+  box-sizing: border-box;
+  cursor: pointer;
 }
 
 .dropzone-container:hover {

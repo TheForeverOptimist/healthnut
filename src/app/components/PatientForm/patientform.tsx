@@ -11,7 +11,7 @@ interface PatientFormProps {
 const PatientForm = ({ onCreatePatient }: PatientFormProps) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isFormActive, setIsFormActive] = useState(true);
 
   const handleCreatePatient = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,15 +37,21 @@ const PatientForm = ({ onCreatePatient }: PatientFormProps) => {
       onCreatePatient(patient);
       setFirstName("");
       setLastName("");
-      setIsDisabled(true)
+      setIsFormActive(false)
 
     } catch (err) {
       console.error("Error creating patient: ", err);
     }
   };
 
+  const handleAddNewPatient = () => {
+    setIsFormActive(true)
+  }
+
   return (
-    <div className={`box patientForm ${isDisabled ? "disabled": ''}`}>
+    <div className={`box patientForm ${isFormActive ? "inactive": ''}`}>
+      {isFormActive ? (
+
       <form onSubmit={handleCreatePatient}>
         <label htmlFor="patientForm" className="patientLabel">
           Enter Patient Name
@@ -64,6 +70,9 @@ const PatientForm = ({ onCreatePatient }: PatientFormProps) => {
         />
         <button type="submit">Create Patient</button>
       </form>
+      ): (
+        <button onClick={handleAddNewPatient} className="addNewPatientButton">Add New Patient +</button>
+      )}
     </div>
   );
 };

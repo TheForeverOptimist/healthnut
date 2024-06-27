@@ -8,12 +8,14 @@ interface ResourceSheetProps {
   patients: Patient[];
   selectedPatient: Patient | null;
   setSelectedPatient: (patient: Patient | null) => void;
+  triggerRefetch: boolean;
 }
 
 const ResourceSheet: React.FC<ResourceSheetProps> = ({
   patients,
   selectedPatient,
   setSelectedPatient,
+  triggerRefetch,
 }) => {
   const [activeTab, setActiveTab] = useState<"list" | "resource">("list");
   const [resources, setResources] = useState<{
@@ -42,7 +44,7 @@ const ResourceSheet: React.FC<ResourceSheetProps> = ({
     };
 
     fetchResources();
-  }, [selectedPatient]);
+  }, [selectedPatient, triggerRefetch]);
 
   const fetchPatientResources = async (patientId: string) => {
     const documentReferencesResult = await medplum.search("DocumentReference", {
@@ -116,7 +118,7 @@ const ResourceSheet: React.FC<ResourceSheetProps> = ({
         )}
         {activeTab === "resource" && selectedPatient && (
           <div>
-            <h3>Patient: {patientName}</h3>
+            <h3 className="resource_ptname">Patient: {patientName}</h3>
             <div className="resourcesColumns">
               <div className="column">
                 <h4>PDFs</h4>
