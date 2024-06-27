@@ -1,77 +1,71 @@
-import React, { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { Cloud, File, Loader2 } from "lucide-react";
+import React, { useCallback } from "react";
+import { Cloud } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import * as Toast from "@radix-ui/react-toast";
-import * as Progress from "@radix-ui/react-progress";
 import "./uploaddropzone.css";
 import { medplum } from "@/libs/medplumClient";
 import { Patient } from "@/libs/types";
 
-interface UploadProps{
-  patients: Patient[];
+interface UploadProps {
   selectedPatient: Patient | null;
-  onUploadComplete: (attachment: any) => void
 }
 
+const UploadDropZone = ({ selectedPatient }: UploadProps) => {
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      if (!selectedPatient) {
+        console.error("No patient selected");
+        return;
+      }
 
+      if (acceptedFiles.length > 0) {
+        const file = acceptedFiles[0];
+        try {
+          const binary = await medplum.createBinary(file, file.name, file.type);
+          console.log(binary);
 
-const UploadDropZone = ({patients, selectedPatient, onUploadComplete}: UploadProps) => {
+          await medplum.createResource({
+            resourceType: "DocumentReference",
+            status: "current",
+            type: {
+              coding: [
+                {
+                  system: "http://loinc.org",
+                  code: "34108-1",
+                  display: "Outpatient Note",
+                },
+              ],
+              text: "PDF Document",
+            },
+            subject: { reference: `Patient/${selectedPatient.id}` },
+            content: [
+              {
+                attachment: {
+                  contentType: file.type,
+                  url: `Binary/${binary.id}`,
+                  title: file.name,
+                  creation: new Date().toISOString(),
+                },
+              },
+            ],
+            description: "Patient PDF Document",
+          });
 
- const onDrop = useCallback(
-   async (acceptedFiles: File[]) => {
-     if (!selectedPatient) {
-       console.error("No patient selected");
-       return;
-     }
+          // You can add a toast notification here to inform the user of successful upload
+          console.log("File uploaded successfully");
+        } catch (error) {
+          console.error("Error uploading file:", error);
+          // You can add a toast notification here to inform the user of the error
+        }
+      }
+    },
+    [selectedPatient]
+  );
 
-     if (acceptedFiles.length > 0) {
-       const file = acceptedFiles[0];
-       try {
-         const binary = await medplum.createBinary(file, file.name, file.type);
-         console.log(binary)
-
-         const documentReference = await medplum.createResource({
-           resourceType: "DocumentReference",
-           status: "current",
-           type: {
-             coding: [
-               {
-                 system: "http://loinc.org",
-                 code: "34108-1",
-                 display: "Outpatient Note",
-               },
-             ],
-             text: "PDF Document"
-           },
-           subject: { reference: `Patient/${selectedPatient.id}` },
-           content: [
-             {
-               attachment: {
-                 contentType: file.type,
-                 url: `Binary/${binary.id}`,
-                 title: file.name,
-                 creation: new Date().toISOString(),
-               },
-             },
-           ],
-           description: "Patient PDF Document"
-         });
-         
-
-
-
-         onUploadComplete(documentReference.content[0].attachment);
-       } catch (error) {
-         console.error("Error uploading file:", error);
-       }
-     }
-   },
-   [selectedPatient, onUploadComplete]
- );
-
- const {getRootProps, getInputProps} = useDropzone({onDrop, maxSize: 4 * 1024 * 1024})
-
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    maxSize: 4 * 1024 * 1024,
+  });
 
   return (
     <Toast.Provider swipeDirection="right">
