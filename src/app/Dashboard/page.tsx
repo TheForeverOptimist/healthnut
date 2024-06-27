@@ -17,14 +17,32 @@ const Dashboard = () => {
   const [triggerRefetch, setTriggerRefetch] = useState<boolean>(false)
 
   useEffect(() => {
-    const cookies = parseClientCookies();
-    const accessToken = cookies.medplumAccessToken;
+    const intializeDashboard = async () => {
+          const cookies = parseClientCookies();
+          const accessToken = cookies.medplumAccessToken;
 
-    if (accessToken) {
-      console.log(accessToken);
-      medplum.setAccessToken(accessToken);
-    }
+          if (accessToken) {
+            console.log(accessToken);
+            medplum.setAccessToken(accessToken);
+            await fetchPatients()
+          }
+    };
+    intializeDashboard();
   }, []);
+
+    const fetchPatients = async () => {
+      try {
+        const searchResponse = await medplum.search("Patient");
+        if (searchResponse.entry) {
+          const fetchedPatients = searchResponse.entry.map(
+            (entry: any) => entry.resource
+          );
+          setPatients(fetchedPatients);
+        }
+      } catch (error) {
+        console.error("Error fetching patients:", error);
+      }
+    };
 
   const handleCreatePatient = (patient: Patient) => {
     setPatients((prevPatients) => [...prevPatients, patient]);
