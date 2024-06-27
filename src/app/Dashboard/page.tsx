@@ -14,6 +14,7 @@ import { Patient } from "@/libs/types";
 const Dashboard = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+  const [triggerRefetch, setTriggerRefetch] = useState<boolean>(false)
 
   useEffect(() => {
     const cookies = parseClientCookies();
@@ -30,18 +31,23 @@ const Dashboard = () => {
     setSelectedPatient(patient);
   };
 
+  const handleUploadSuccess = () => {
+    setTriggerRefetch(prev => !prev)
+  }
+
   return (
     <>
       <Header />
       <div className="dashboard">
         <PatientForm onCreatePatient={handleCreatePatient} />
         <div className="box pdfLoader">
-          <UploadDropZone selectedPatient={selectedPatient} />
+          <UploadDropZone selectedPatient={selectedPatient} onUploadSuccess={handleUploadSuccess} />
         </div>
         <ResourceSheet
           patients={patients}
           selectedPatient={selectedPatient}
           setSelectedPatient={setSelectedPatient}
+          triggerRefetch={triggerRefetch}
         />
         <VoiceRecorder />
       </div>

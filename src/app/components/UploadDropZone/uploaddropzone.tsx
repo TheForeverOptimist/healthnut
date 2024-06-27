@@ -8,9 +8,10 @@ import { Patient } from "@/libs/types";
 
 interface UploadProps {
   selectedPatient: Patient | null;
+  onUploadSuccess: () => void
 }
 
-const UploadDropZone = ({ selectedPatient }: UploadProps) => {
+const UploadDropZone = ({ selectedPatient, onUploadSuccess }: UploadProps) => {
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       if (!selectedPatient) {
@@ -51,15 +52,15 @@ const UploadDropZone = ({ selectedPatient }: UploadProps) => {
             description: "Patient PDF Document",
           });
 
-          // You can add a toast notification here to inform the user of successful upload
           console.log("File uploaded successfully");
+          onUploadSuccess()
         } catch (error) {
           console.error("Error uploading file:", error);
           // You can add a toast notification here to inform the user of the error
         }
       }
     },
-    [selectedPatient]
+    [selectedPatient, onUploadSuccess]
   );
 
   const { getRootProps, getInputProps } = useDropzone({
