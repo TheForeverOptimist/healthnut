@@ -49,6 +49,10 @@
   overflow-y: auto;
 }
 
+.column.pdf-column {
+  flex: 2; /* Make the PDF column twice as wide as the others */
+}
+
 .column h4 {
   margin: 0 0 15px;
   color: #3498db;
@@ -69,10 +73,23 @@
   transition: all 0.3s ease;
 }
 
+.column li a {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #2c3e50;
+  text-decoration: none;
+}
+
 .column li:hover {
   background-color: #e9ecef;
   transform: translateY(-2px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.column li:hover a {
+  color: #3498db;
 }
 
 .tabs {

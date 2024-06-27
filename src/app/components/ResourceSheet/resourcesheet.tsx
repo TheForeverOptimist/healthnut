@@ -120,7 +120,7 @@ const ResourceSheet: React.FC<ResourceSheetProps> = ({
           <div>
             <h3 className="resource_ptname">Patient: {patientName}</h3>
             <div className="resourcesColumns">
-              <div className="column">
+              <div className="column pdf-column">
                 <h4>PDFs</h4>
                 <ul>
                   {resources.documentReferences.map(
@@ -130,6 +130,10 @@ const ResourceSheet: React.FC<ResourceSheetProps> = ({
                           href={file.content[0].attachment.url}
                           target="_blank"
                           rel="noopener noreferrer"
+                          title={
+                            file.content[0].attachment.title ||
+                            `File ${index + 1}`
+                          }
                         >
                           {file.content[0].attachment.title ||
                             `File ${index + 1}`}
