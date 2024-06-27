@@ -1,10 +1,26 @@
-.patientForm.disabled {
+.patientForm.inactive {
   filter: blur(4px);
   pointer-events: none;
 }
 
-.patientForm input:disabled,
-.patientForm button:disabled {
+.patientForm.inactive input,
+.patientForm.inactive button {
   background-color: #f0f0f0;
   cursor: not-allowed;
+}
+
+.addNewPatientButton{
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px 20px;
+  font-size: 1em;
+  color: white;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 10;
 }
