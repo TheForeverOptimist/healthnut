@@ -23,6 +23,7 @@ Our application leverages a powerful and modern tech stack:
 
 - ⚛️ **React**: For building a dynamic and responsive user interface
 - 🚀 **Next.js**: Providing server-side rendering and optimized performance
+- 🛡️ **TypeScript**: Ensuring code reliability and maintainability through static typing
 - 🔥 **FHIR**: Ensuring healthcare data interoperability
 - 🏥 **Medplum**: A HIPAA-compliant backend for secure health data management
 
