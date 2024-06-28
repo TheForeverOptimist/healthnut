@@ -12,7 +12,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.resource_ptname{
+.resource_ptname {
   padding: 0.2em;
   margin-top: -0.5em;
 }
@@ -46,7 +46,6 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  overflow-y: auto;
 }
 
 .column.pdf-column {
@@ -71,6 +70,12 @@
   border-radius: 6px;
   margin-bottom: 10px;
   transition: all 0.3s ease;
+}
+
+.column li audio {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 5px;
 }
 
 .column li a {
@@ -112,7 +117,7 @@
 }
 
 .tabs button::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -2px;
   left: 0;
@@ -140,6 +145,7 @@
   margin-top: 1em;
   flex-grow: 1;
   min-height: 0;
+  overflow-y: auto;
 }
 
 .patient-list {

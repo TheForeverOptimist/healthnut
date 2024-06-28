@@ -47,7 +47,7 @@ const LoginForm = (): JSX.Element => {
         />
 
         {error && <p>{error}</p>}
-        <button type="submit">Login!</button>
+        <button type="submit">Login</button>
       </form>
     </section>
   );

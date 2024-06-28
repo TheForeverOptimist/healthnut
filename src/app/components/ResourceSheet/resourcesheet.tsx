@@ -162,7 +162,7 @@ const fetchPatientResources = async (patientId: string) => {
                   )}
                 </ul>
               </div>
-              <div className="column">
+              <div className="column audio-column">
                 <h4>Voice Recordings</h4>
                 <ul>
                   {resources.voiceRecordings.map((file: any, index: number) => (
