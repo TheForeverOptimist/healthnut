@@ -50,7 +50,7 @@
 }
 
 .column.pdf-column {
-  flex: 2; /* Make the PDF column twice as wide as the others */
+  flex: 1; /* Make the PDF column twice as wide as the others */
 }
 
 .column h4 {
@@ -139,7 +139,6 @@
 .tab-content {
   margin-top: 1em;
   flex-grow: 1;
-  overflow-y:auto;
 }
 
 .patient-list {

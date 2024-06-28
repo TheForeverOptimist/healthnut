@@ -163,13 +163,6 @@ const ResourceSheet: React.FC<ResourceSheetProps> = ({
                   ))}
                 </ul>
               </div>
-              <div className="column">
-                <h4>AI Suggestions</h4>
-                <ul>
-                  <li>Coming Soon!</li>
-                  <li>Coming Soon!</li>
-                </ul>
-              </div>
             </div>
           </div>
         )}

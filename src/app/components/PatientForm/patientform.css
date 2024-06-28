@@ -1,16 +1,48 @@
-.patientForm.inactive {
+
+.patientForm label {
+  display: flex;
+  align-self: center;
+  margin-bottom: 1em;
+}
+.patientForm{
+  grid-area: patient;
+  position: relative;
+}
+
+.patientForm button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: rgb(159, 207, 110);
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0, 0.3);
+  cursor: pointer;
+}
+
+.patientLabel{
+  font-size:1.2em;
+  font-weight: bold;
+}
+
+.formContainer {
+  transition: all 0.3s ease;
+}
+
+.formContainer.inactive {
   filter: blur(4px);
   pointer-events: none;
 }
 
-.patientForm.inactive input,
-.patientForm.inactive button {
+.formContainer.inactive input,
+.formContainer.inactive button {
   background-color: #f0f0f0;
   cursor: not-allowed;
 }
 
-.addNewPatientButton{
-    position: absolute;
+.addNewPatientButton {
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -23,4 +55,8 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   z-index: 10;
+}
+
+.addNewPatientButton:hover {
+  background-color: #45a049;
 }

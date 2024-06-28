@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../Dashboard/dashboard.css";
 import { medplum } from "@/libs/medplumClient";
-import './patientform.css'
+import "./patientform.css";
 import { Patient } from "@/libs/types";
 
 interface PatientFormProps {
@@ -37,41 +37,42 @@ const PatientForm = ({ onCreatePatient }: PatientFormProps) => {
       onCreatePatient(patient);
       setFirstName("");
       setLastName("");
-      setIsFormActive(false)
-
+      setIsFormActive(false);
     } catch (err) {
       console.error("Error creating patient: ", err);
     }
   };
 
   const handleAddNewPatient = () => {
-    setIsFormActive(true)
-  }
+    setIsFormActive(true);
+  };
 
   return (
-    <div className={`box patientForm ${isFormActive ? "inactive": ''}`}>
-      {isFormActive ? (
-
-      <form onSubmit={handleCreatePatient}>
-        <label htmlFor="patientForm" className="patientLabel">
-          Enter Patient Name
-        </label>
-        <input
-          type="text"
-          placeholder="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-        <button type="submit">Create Patient</button>
-      </form>
-      ): (
-        <button onClick={handleAddNewPatient} className="addNewPatientButton">Add New Patient +</button>
+    <div className="box patientForm">
+      <div className={`formContainer ${isFormActive ? "" : "inactive"}`}>
+        <form onSubmit={handleCreatePatient}>
+          <label htmlFor="patientForm" className="patientLabel">
+            Enter Patient Name
+          </label>
+          <input
+            type="text"
+            placeholder="First Name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+          <button type="submit">Create Patient</button>
+        </form>
+      </div>
+      {!isFormActive && (
+        <button onClick={handleAddNewPatient} className="addNewPatientButton">
+          Add New Patient +
+        </button>
       )}
     </div>
   );

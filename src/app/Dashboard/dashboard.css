@@ -60,15 +60,6 @@
   background-color: rgb(139, 187, 90);
 }
 
-.patientForm label {
-  display: flex;
-  align-self: center;
-  margin-bottom: 1em;
-}
-.patientForm{
-  grid-area: patient
-}
-
 .pdfLoader{
   grid-area: pdf;
 }
@@ -79,22 +70,7 @@
   grid-area: audio;
 }
 
-.patientForm button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #fff;
-  background-color: rgb(159, 207, 110);
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0,0,0, 0.3);
-  cursor: pointer;
-}
 
-.patientLabel{
-  font-size:1.2em;
-  font-weight: bold;
-}
 
 
 @media (max-width: 600px) {

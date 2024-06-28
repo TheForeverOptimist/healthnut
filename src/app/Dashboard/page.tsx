@@ -49,6 +49,10 @@ const Dashboard = () => {
     setSelectedPatient(patient);
   };
 
+  const handleRecordingComplete = () => {
+    setTriggerRefetch(prev => !prev)
+  }
+
   const handleUploadSuccess = () => {
     setTriggerRefetch(prev => !prev)
   }
@@ -67,7 +71,7 @@ const Dashboard = () => {
           setSelectedPatient={setSelectedPatient}
           triggerRefetch={triggerRefetch}
         />
-        <VoiceRecorder />
+        <VoiceRecorder selectedPatient={selectedPatient} onRecordingComplete={handleRecordingComplete} />
       </div>
     </>
   );
