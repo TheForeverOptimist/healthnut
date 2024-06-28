@@ -25,8 +25,22 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({selectedPatient, onRecordi
       }
     }, [])
 
-    const startRecording = () => {
+    const startRecording = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+        mediaRecorder.current = new MediaRecorder(stream)
 
+        mediaRecorder.current.ondataavailable = (event) => {
+          audioChunks.current.push(event.data)
+        };
+
+        mediaRecorder.current.start(10);
+        setIsRecording(true)
+        startTimer();
+
+      }catch (err){
+        console.error("Error accessing mic:", err)
+      }
     }
 
     const pauseRecording = () => {
@@ -43,6 +57,18 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({selectedPatient, onRecordi
 
     const saveRecording = () => {
 
+    }
+
+    const startTimer = () => {
+      timerInterval.current = setInterval(() => {
+        setRecordingTime((prevTime) => prevTime + 1)
+      }, 1000)
+    }
+
+    const formatTime = (time: number): string => {
+      const minutes = Math.floor(time / 60);
+      const seconds = time % 60;
+      return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
     }
 
 
