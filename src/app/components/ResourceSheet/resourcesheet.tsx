@@ -52,23 +52,30 @@ useEffect(() => {
 
 const fetchPatientResources = async (patientId: string) => {
   try {
-    const documentReferencesResult = await medplum.search("DocumentReference", {
-      subject: `Patient/${patientId}`,
-      "type.coding.code": "pdf",
-    });
+    // Fetch all DocumentReferences for the patient
+    const allDocumentReferencesResult = await medplum.search(
+      "DocumentReference",
+      {
+        subject: `Patient/${patientId}`,
+      }
+    );
 
-    const voiceRecordingsResult = await medplum.search("DocumentReference", {
-      subject: `Patient/${patientId}`,
-      "type.coding.code": "voice-recording",
-    });
+    const allDocumentReferences = allDocumentReferencesResult.entry
+      ? allDocumentReferencesResult.entry.map((entry: any) => entry.resource)
+      : [];
+
+    //@ts-ignore
+    const documentReferences = allDocumentReferences.filter((doc) =>
+      doc.type?.coding?.some((coding: any) => coding.code === "pdf")
+    );
+    //@ts-ignore
+    const voiceRecordings = allDocumentReferences.filter((doc) =>
+      doc.type?.coding?.some((coding: any) => coding.code === "voice-recording")
+    );
 
     return {
-      documentReferences: documentReferencesResult.entry
-        ? documentReferencesResult.entry.map((entry: any) => entry.resource)
-        : [],
-      voiceRecordings: voiceRecordingsResult.entry
-        ? voiceRecordingsResult.entry.map((entry: any) => entry.resource)
-        : [],
+      documentReferences,
+      voiceRecordings,
     };
   } catch (error) {
     console.error("Error fetching patient resources:", error);
