@@ -16,8 +16,8 @@ export default function Hero(): JSX.Element {
   return (
     <section className="heroSection">
       <div className="heroContent">
-        <h1>Post Visit Summaries that Make Sense for Everyone</h1>
-        <p>We make sure you have no doubts about the cost of your care!</p>
+        <h1>Streamline Post-Visits, Amplify Patient Care</h1>
+        <p>Reclaim your time. Enhance your EHR experience.</p>
         <Image className="stethoImage" src={stetho} alt="stethoscope"></Image>
         <button onClick={handleInviteClick} className="start">Let&apos;s get started!</button>
       </div>

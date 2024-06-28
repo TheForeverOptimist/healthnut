@@ -52,7 +52,7 @@ const PatientForm = ({ onCreatePatient }: PatientFormProps) => {
       <div className={`formContainer ${isFormActive ? "" : "inactive"}`}>
         <form onSubmit={handleCreatePatient}>
           <label htmlFor="patientForm" className="patientLabel">
-            Enter Patient Name
+            To Begin: Enter Patient Name
           </label>
           <input
             type="text"

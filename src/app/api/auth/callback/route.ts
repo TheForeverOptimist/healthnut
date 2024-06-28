@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Buffer } from "buffer";
 import { medplum } from "@/libs/medplumClient";
+import config from "../../../../../config";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -18,7 +19,7 @@ export async function GET(req: NextRequest) {
   const tokenUrl = "https://api.medplum.com/oauth2/token";
   const clientId = process.env.MEDPLUM_CLIENT_ID;
   const clientSecret = process.env.MEDPLUM_CLIENT_SECRET;
-  const redirectUri = "http://localhost:3000/api/auth/callback";
+  const redirectUri = `${config.baseUrl}/api/auth/callback`;
 
   // console.log("Received code:", code);
   console.log("Using client ID:", clientId);
@@ -32,7 +33,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  // Construct the Basic Authorization header
+  // Medplum documentation wants a basic auth
   const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString(
     "base64"
   );
@@ -105,7 +106,7 @@ export async function GET(req: NextRequest) {
     };
 
     const response = NextResponse.redirect(
-      `${process.env.DEV_BASE_URL}/Dashboard`
+      `${config.baseUrl}/Dashboard`
     );
     response.cookies.set("medplumAccessToken", accessToken, cookieOptions);
     response.cookies.set(
