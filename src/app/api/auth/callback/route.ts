@@ -99,15 +99,14 @@ export async function GET(req: NextRequest) {
     console.log("User Info before cookie set: ", userInfo);
 
     const cookieOptions = {
-      maxAge: 30 * 24 * 60 * 60, // 30 days
+      maxAge: 30 * 24 * 60 * 60,
       path: "/",
       secure: process.env.NODE_ENV === "production",
-      sameSite: true,
+      sameSite: "strict" as const,
+      httpOnly: false,
     };
 
-    const response = NextResponse.redirect(
-      `${config.baseUrl}/Dashboard`
-    );
+    const response = NextResponse.redirect(`${config.baseUrl}/Dashboard`);
     response.cookies.set("medplumAccessToken", accessToken, cookieOptions);
     response.cookies.set(
       "medplumUserInfo",

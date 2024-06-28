@@ -9,9 +9,12 @@ export const setCookie = (name: string, value: string, options = {}) => {
 
 
 export const parseClientCookies = () => {
-  if (typeof document !== "undefined") {
-    const cookieHeader = document.cookie;
-    return parse(cookieHeader);
+  if (typeof window !== "undefined") {
+    return document.cookie.split("; ").reduce((prev, current) => {
+      const [name, ...value] = current.split("=");
+      prev[name] = value.join("=");
+      return prev;
+    }, {} as Record<string, string>);
   }
   return {};
 };
