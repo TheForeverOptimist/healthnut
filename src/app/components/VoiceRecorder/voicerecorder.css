@@ -1,0 +1,36 @@
+.voiceRecorder {
+  grid-area: audio;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.voiceRecorder .timer {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.voiceRecorder button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: rgb(159, 207, 110);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.voiceRecorder button:hover {
+  background-color: #0056b3;
+}
+
+.voiceRecorder button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}

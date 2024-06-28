@@ -66,13 +66,6 @@
 
 
 
-.voiceRecorder{
-  grid-area: audio;
-}
-
-
-
-
 @media (max-width: 600px) {
   .resourcesColumns {
     flex-direction: column;
