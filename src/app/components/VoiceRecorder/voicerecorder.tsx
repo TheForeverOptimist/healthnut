@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from "react";
 import "../../Dashboard/dashboard.css";
 import { Patient } from "@/libs/types";
+import { medplum } from "@/libs/medplumClient";
 
 interface VoiceRecorderProps {
   selectedPatient: Patient | null;
@@ -44,25 +45,77 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({selectedPatient, onRecordi
     }
 
     const pauseRecording = () => {
-
+      if(mediaRecorder.current && isRecording){
+        mediaRecorder.current.pause();
+        setIsPaused(true);
+        stopTimer();
+      }
     }
 
     const resumeRecording = () => {
-
+      if(mediaRecorder.current && isPaused){
+        mediaRecorder.current.resume();
+        setIsPaused(false);
+        startTimer();
+      }
     }
 
     const stopRecording = () => {
+      if (mediaRecorder.current) {
+        mediaRecorder.current.stop();
+        setIsRecording(false);
+        setIsPaused(false);
+        stopTimer();
 
-    }
+        mediaRecorder.current.onstop = async () => {
+          const audioBlob = new Blob(audioChunks.current, {
+            type: "audio/webm",
+          });
+          await saveRecording(audioBlob);
+          audioChunks.current = [];
+        };
+      }
+    };
 
-    const saveRecording = () => {
+    const saveRecording = async (audioBlob: Blob) => {
+      if(selectedPatient){
+        try{
+          const binary = await medplum.createBinary(audioBlob, 'postvisit.webm', 'audio/webm');
 
-    }
+          await medplum.createResource({
+          resourceType: 'Observation',
+          status: 'final',
+          code: {
+            coding: [{
+              system: 'http://loinc.org',
+              code: '85021-0',
+              display: 'Voice recording'
+            }]
+          },
+          subject: { reference: `Patient/${selectedPatient.id}` },
+          valueAttachment: {
+            contentType: 'audio/webm',
+            url: `Binary/${binary.id}`,
+            title: `Voice Recording - ${new Date().toISOString()}`,
+          }
+        });
+        onRecordingComplete();
+        }catch(err){
+          console.error("Error saving voice note:", err)
+        };
+      };
+    };
 
     const startTimer = () => {
       timerInterval.current = setInterval(() => {
         setRecordingTime((prevTime) => prevTime + 1)
       }, 1000)
+    }
+
+    const stopTimer = () => {
+      if(timerInterval.current){
+        clearInterval(timerInterval.current)
+      }
     }
 
     const formatTime = (time: number): string => {
