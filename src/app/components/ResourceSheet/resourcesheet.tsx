@@ -20,8 +20,8 @@ const ResourceSheet: React.FC<ResourceSheetProps> = ({
   const [activeTab, setActiveTab] = useState<"list" | "resource">("list");
   const [resources, setResources] = useState<{
     documentReferences: any[];
-    observations: any[];
-  }>({ documentReferences: [], observations: [] });
+    voiceRecordings: any[];
+  }>({ documentReferences: [], voiceRecordings: [] });
 
   useEffect(() => {
     if (patients.length === 1) {
@@ -46,23 +46,31 @@ const ResourceSheet: React.FC<ResourceSheetProps> = ({
     fetchResources();
   }, [selectedPatient, triggerRefetch]);
 
-  const fetchPatientResources = async (patientId: string) => {
+const fetchPatientResources = async (patientId: string) => {
+  try {
     const documentReferencesResult = await medplum.search("DocumentReference", {
       subject: `Patient/${patientId}`,
+      "type.coding.code": "pdf",
     });
-    const observationsResult = await medplum.search("Observation", {
+
+    const voiceRecordingsResult = await medplum.search("DocumentReference", {
       subject: `Patient/${patientId}`,
+      "type.coding.code": "voice-recording",
     });
 
     return {
       documentReferences: documentReferencesResult.entry
         ? documentReferencesResult.entry.map((entry: any) => entry.resource)
         : [],
-      observations: observationsResult.entry
-        ? observationsResult.entry.map((entry: any) => entry.resource)
+      voiceRecordings: voiceRecordingsResult.entry
+        ? voiceRecordingsResult.entry.map((entry: any) => entry.resource)
         : [],
     };
-  };
+  } catch (error) {
+    console.error("Error fetching patient resources:", error);
+    return { documentReferences: [], voiceRecordings: [] };
+  }
+};
 
   const selectPatient = (patient: Patient) => {
     setSelectedPatient(patient);
@@ -144,23 +152,28 @@ const ResourceSheet: React.FC<ResourceSheetProps> = ({
                 </ul>
               </div>
               <div className="column">
-                <h4>Voice Notes</h4>
+                <h4>Voice Recordings</h4>
                 <ul>
-                  {resources.observations.map((note: any, index: number) => (
-                    <li key={index}>
-                      <a
-                        href={note.valueAttachment?.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {note.valueAttachment?.title ||
-                          `Voice Note ${index + 1}`}
-                      </a>
-                      <p>
-                        Recorded on: {new Date(note.issued).toLocaleString()}
-                      </p>
-                    </li>
-                  ))}
+                  {resources.voiceRecordings.map(
+                    (recording: any, index: number) => (
+                      <li key={index}>
+                        <a
+                          href={recording.valueAttachment.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {recording.valueAttachment.title ||
+                            `Recording ${index + 1}`}
+                        </a>
+                        <p>
+                          Recorded on:{" "}
+                          {new Date(
+                            recording.effectiveDateTime
+                          ).toLocaleString()}
+                        </p>
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
             </div>

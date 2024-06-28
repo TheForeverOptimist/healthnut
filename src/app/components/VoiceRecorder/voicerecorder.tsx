@@ -89,26 +89,30 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
           "audio/webm"
         );
 
-         await medplum.createResource({
-           resourceType: "Observation",
-           status: "final",
-           code: {
-             coding: [
-               {
-                 system: "http://loinc.org",
-                 code: "85021-0",
-                 display: "Voice recording",
-               },
-             ],
-           },
-           subject: { reference: `Patient/${selectedPatient.id}` },
-           valueString: `Voice recording taken on ${new Date().toISOString()}`,
-           derivedFrom: [
-             {
-               reference: `Binary/${binary.id}`,
-             },
-           ],
-         });
+ await medplum.createResource({
+   resourceType: "DocumentReference",
+   status: "current",
+   type: {
+     coding: [
+       {
+         system: "healthnut",
+         code: "voice-recording",
+         display: "Voice Recording",
+       },
+     ],
+   },
+   subject: { reference: `Patient/${selectedPatient.id}` },
+   content: [
+     {
+       attachment: {
+         contentType: "audio/webm",
+         url: `Binary/${binary.id}`,
+         title: `Voice Recording - ${new Date().toISOString()}`,
+       },
+     },
+   ],
+   date: new Date().toISOString(),
+ });
         onRecordingComplete();
       } catch (err) {
         console.error("Error saving voice note:", err);
