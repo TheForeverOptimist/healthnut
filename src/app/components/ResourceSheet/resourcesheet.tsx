@@ -9,6 +9,7 @@ interface ResourceSheetProps {
   selectedPatient: Patient | null;
   setSelectedPatient: (patient: Patient | null) => void;
   triggerRefetch: boolean;
+  switchToResourceTab: boolean;
 }
 
 const ResourceSheet: React.FC<ResourceSheetProps> = ({
@@ -16,6 +17,7 @@ const ResourceSheet: React.FC<ResourceSheetProps> = ({
   selectedPatient,
   setSelectedPatient,
   triggerRefetch,
+  switchToResourceTab = false,
 }) => {
   const [activeTab, setActiveTab] = useState<"list" | "resource">("list");
   const [resources, setResources] = useState<{
@@ -23,15 +25,17 @@ const ResourceSheet: React.FC<ResourceSheetProps> = ({
     voiceRecordings: any[];
   }>({ documentReferences: [], voiceRecordings: [] });
 
-  useEffect(() => {
-    if (patients.length === 1) {
-      setSelectedPatient(patients[0]);
-      setActiveTab("resource");
-    } else if (patients.length === 0) {
-      setSelectedPatient(null);
-      setActiveTab("list");
-    }
-  }, [patients, setSelectedPatient]);
+useEffect(() => {
+  if (switchToResourceTab && selectedPatient) {
+    setActiveTab("resource");
+  } else if (patients.length === 1) {
+    setSelectedPatient(patients[0]);
+    setActiveTab("resource");
+  } else if (patients.length === 0) {
+    setSelectedPatient(null);
+    setActiveTab("list");
+  }
+}, [patients, setSelectedPatient, switchToResourceTab, selectedPatient]);
 
   useEffect(() => {
     const fetchResources = async () => {

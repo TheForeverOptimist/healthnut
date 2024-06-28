@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [triggerRefetch, setTriggerRefetch] = useState<boolean>(false)
+  const [switchToResourceTab, setSwitchToResourceTab] = useState(false);
 
   useEffect(() => {
     const intializeDashboard = async () => {
@@ -47,6 +48,7 @@ const Dashboard = () => {
   const handleCreatePatient = (patient: Patient) => {
     setPatients((prevPatients) => [...prevPatients, patient]);
     setSelectedPatient(patient);
+    setSwitchToResourceTab(true);
   };
 
   const handleRecordingComplete = () => {
@@ -70,6 +72,7 @@ const Dashboard = () => {
           selectedPatient={selectedPatient}
           setSelectedPatient={setSelectedPatient}
           triggerRefetch={triggerRefetch}
+          switchToResourceTab={switchToResourceTab}
         />
         <VoiceRecorder selectedPatient={selectedPatient} onRecordingComplete={handleRecordingComplete} />
       </div>
