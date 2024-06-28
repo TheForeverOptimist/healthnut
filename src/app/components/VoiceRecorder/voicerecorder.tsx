@@ -69,6 +69,7 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
       setIsRecording(false);
       setIsPaused(false);
       stopTimer();
+      
 
       mediaRecorder.current.onstop = async () => {
         const audioBlob = new Blob(audioChunks.current, {
@@ -76,6 +77,7 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
         });
         await saveRecording(audioBlob);
         audioChunks.current = [];
+        setRecordingTime(0);
       };
     }
   };

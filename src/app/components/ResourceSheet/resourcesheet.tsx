@@ -165,26 +165,18 @@ const fetchPatientResources = async (patientId: string) => {
               <div className="column">
                 <h4>Voice Recordings</h4>
                 <ul>
-                  {resources.voiceRecordings.map(
-                    (recording: any, index: number) => (
-                      <li key={index}>
-                        <a
-                          href={recording.valueAttachment.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {recording.valueAttachment.title ||
-                            `Recording ${index + 1}`}
-                        </a>
-                        <p>
-                          Recorded on:{" "}
-                          {new Date(
-                            recording.effectiveDateTime
-                          ).toLocaleString()}
-                        </p>
-                      </li>
-                    )
-                  )}
+                  {resources.voiceRecordings.map((file: any, index: number) => (
+                    <li key={index}>
+                      <audio controls>
+                        <source
+                          src={file.content[0].attachment.url}
+                          type="audio/webm"
+                        />
+                        {file.content[0].attachment.title ||
+                          `Recording ${index + 1}`}
+                      </audio>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
