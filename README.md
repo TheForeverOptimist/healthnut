@@ -38,15 +38,6 @@ HealthNut demonstrates key functionalities that can be expanded upon:
 
 Developers can use HealthNut as a reference to understand Medplum's capabilities and as a starting point for building more complex, feature-rich healthcare applications.
 
-## 📈 Scalability
-
-HealthNut is built with scalability in mind:
-
-- 🌐 **Cloud-Native Architecture**: Easily deployable to cloud platforms for increased capacity.
-- 🔄 **Microservices Potential**: Current monolithic structure can be broken down into microservices for better resource allocation.
-- 🚀 **Performance Optimization**: Utilizes Next.js for efficient rendering and data fetching, supporting growth in user base and data volume.
-- 🔧 **Modular Design**: Allows for easy addition of new features and integration with other healthcare systems.
-
 ## 🔨 Room for Improvement
 
 While HealthNut is a powerful demo, there's always room for enhancement:
